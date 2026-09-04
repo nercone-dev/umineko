@@ -1,0 +1,11 @@
+[package]
+name = "umineko-crypto-ecdh"
+description = "ECDH"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }

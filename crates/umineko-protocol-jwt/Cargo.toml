@@ -1,0 +1,11 @@
+[package]
+name = "umineko-protocol-jwt"
+description = "JWT"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-codec-base = { workspace = true, features = ["base64"] }

@@ -1,0 +1,18 @@
+[package]
+name = "umineko-hash-crc"
+description = "CRC and Adler checksums"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["crc16", "crc32", "crc32c", "adler32"]
+crc16 = []
+crc32 = []
+crc32c = []
+adler32 = []
+
+[dependencies]
+umineko-helpers = { workspace = true }

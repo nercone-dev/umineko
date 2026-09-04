@@ -1,0 +1,123 @@
+[package]
+name = "umineko-provider-auto"
+description = "Automatic provider selection"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-provider = { workspace = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+umineko-provider-linux = { workspace = true }
+
+[target.'cfg(target_vendor = "apple")'.dependencies]
+umineko-provider-darwin = { workspace = true }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+umineko-provider-windows = { workspace = true }
+
+[target.'cfg(target_os = "android")'.dependencies]
+umineko-provider-android = { workspace = true }
+
+[target.'cfg(target_os = "freebsd")'.dependencies]
+umineko-provider-freebsd = { workspace = true }
+
+[target.'cfg(target_os = "openbsd")'.dependencies]
+umineko-provider-openbsd = { workspace = true }
+
+[target.'cfg(target_os = "netbsd")'.dependencies]
+umineko-provider-netbsd = { workspace = true }
+
+[target.'cfg(target_os = "wasi")'.dependencies]
+umineko-provider-wasi = { workspace = true }
+
+[features]
+default = ["ip", "icmp", "uds", "tcp", "udp", "hash", "crypto", "tls", "quic", "http", "dns", "codec", "constructor"]
+constructor = []
+ip = [
+    "umineko-provider/ip",
+    "umineko-provider-linux/ip",
+    "umineko-provider-darwin/ip",
+    "umineko-provider-windows/ip",
+    "umineko-provider-android/ip",
+    "umineko-provider-freebsd/ip",
+    "umineko-provider-openbsd/ip",
+    "umineko-provider-netbsd/ip",
+]
+icmp = [
+    "umineko-provider/icmp",
+    "umineko-provider-linux/icmp",
+    "umineko-provider-darwin/icmp",
+    "umineko-provider-windows/icmp",
+    "umineko-provider-android/icmp",
+    "umineko-provider-freebsd/icmp",
+    "umineko-provider-openbsd/icmp",
+    "umineko-provider-netbsd/icmp",
+]
+uds = [
+    "umineko-provider/uds",
+    "umineko-provider-linux/uds",
+    "umineko-provider-darwin/uds",
+    "umineko-provider-windows/uds",
+    "umineko-provider-android/uds",
+    "umineko-provider-freebsd/uds",
+    "umineko-provider-openbsd/uds",
+    "umineko-provider-netbsd/uds",
+]
+tcp = [
+    "umineko-provider/tcp",
+    "umineko-provider-linux/tcp",
+    "umineko-provider-darwin/tcp",
+    "umineko-provider-windows/tcp",
+    "umineko-provider-android/tcp",
+    "umineko-provider-freebsd/tcp",
+    "umineko-provider-openbsd/tcp",
+    "umineko-provider-netbsd/tcp",
+    "umineko-provider-wasi/tcp",
+]
+udp = [
+    "umineko-provider/udp",
+    "umineko-provider-linux/udp",
+    "umineko-provider-darwin/udp",
+    "umineko-provider-windows/udp",
+    "umineko-provider-android/udp",
+    "umineko-provider-freebsd/udp",
+    "umineko-provider-openbsd/udp",
+    "umineko-provider-netbsd/udp",
+    "umineko-provider-wasi/udp",
+]
+hash = [
+    "umineko-provider/hash",
+    "umineko-provider-linux/hash",
+    "umineko-provider-darwin/hash",
+    "umineko-provider-windows/hash",
+    "umineko-provider-freebsd/hash",
+    "umineko-provider-openbsd/hash",
+    "umineko-provider-netbsd/hash",
+]
+crypto = [
+    "umineko-provider/crypto",
+    "umineko-provider-linux/crypto",
+    "umineko-provider-darwin/crypto",
+    "umineko-provider-windows/crypto",
+    "umineko-provider-android/crypto",
+    "umineko-provider-freebsd/crypto",
+    "umineko-provider-openbsd/crypto",
+    "umineko-provider-netbsd/crypto",
+]
+tls = [
+    "umineko-provider/tls",
+    "umineko-provider-linux/tls",
+    "umineko-provider-darwin/tls",
+    "umineko-provider-windows/tls",
+    "umineko-provider-freebsd/tls",
+    "umineko-provider-openbsd/tls",
+    "umineko-provider-netbsd/tls",
+]
+quic = ["umineko-provider/quic", "umineko-provider-darwin/quic", "umineko-provider-windows/quic"]
+http = ["umineko-provider/http", "umineko-provider-wasi/http"]
+dns = ["umineko-provider/dns"]
+codec = ["umineko-provider/codec"]

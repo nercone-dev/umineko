@@ -1,0 +1,13 @@
+[package]
+name = "umineko-protocol-mqtt"
+description = "MQTT"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["mqtt31", "mqtt50"]
+mqtt31 = []
+mqtt50 = []

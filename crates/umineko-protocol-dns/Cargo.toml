@@ -1,0 +1,25 @@
+[package]
+name = "umineko-protocol-dns"
+description = "DNS"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-quic = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tls = { workspace = true, default-features = true, optional = true }
+umineko-protocol-http = { workspace = true, default-features = true, optional = true }
+umineko-helpers = { workspace = true }
+
+[features]
+default = ["tcp", "udp", "quic", "tls", "https", "dnssec"]
+tcp = ["dep:umineko-protocol-tcp"]
+udp = ["dep:umineko-protocol-udp"]
+quic = ["dep:umineko-protocol-quic"]
+tls = ["dep:umineko-protocol-tls"]
+https = ["dep:umineko-protocol-http"]
+dnssec = []

@@ -1,0 +1,13 @@
+[package]
+name = "umineko-protocol-socks"
+description = "SOCKS"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["socks4", "socks5"]
+socks4 = []
+socks5 = []

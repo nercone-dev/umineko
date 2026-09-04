@@ -1,0 +1,16 @@
+[package]
+name = "umineko-protocol-dhcp"
+description = "DHCP"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-protocol-ip = { workspace = true, default-features = true }
+
+[features]
+default = ["dhcpv4", "dhcpv6"]
+dhcpv4 = []
+dhcpv6 = []

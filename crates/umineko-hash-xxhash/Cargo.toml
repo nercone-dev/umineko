@@ -1,0 +1,17 @@
+[package]
+name = "umineko-hash-xxhash"
+description = "xxHash hashes"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["xxh32", "xxh64", "xxh3"]
+xxh32 = []
+xxh64 = []
+xxh3 = []
+
+[dependencies]
+umineko-helpers = { workspace = true }

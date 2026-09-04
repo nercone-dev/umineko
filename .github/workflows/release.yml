@@ -1,0 +1,590 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  test:
+    name: Test (${{ matrix.arch }}-${{ matrix.os }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: linux
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: macos
+            arch: x86_64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+          - os: macos
+            arch: aarch64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y cmake clang libclang-dev golang-go perl
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install cmake go
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: test-${{ matrix.arch }}-${{ matrix.os }}
+
+      - name: Run cargo check
+        run: cargo check --workspace --release --all-features
+
+      - name: Run cargo test
+        run: cargo test --workspace --release --all-features
+
+      - name: Run cargo clippy
+        run: cargo clippy --workspace --release --all-features
+
+  test-ffi:
+    name: Test FFI (${{ matrix.arch }}-${{ matrix.os }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: linux
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: macos
+            arch: x86_64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+          - os: macos
+            arch: aarch64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y cmake clang libclang-dev golang-go perl
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install cmake go
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: test-ffi-${{ matrix.arch }}-${{ matrix.os }}
+
+      - name: Build FFI
+        run: cargo build --release -p umineko-ffi --all-features
+
+      - name: Check FFI
+        env:
+          CARGO_TERM_COLOR: never
+        run: |
+          cc -std=c11 -Wall -Wextra -Iinclude crates/umineko-ffi/tests/ffi.c -Ltarget/release -lumineko -o ffi-shared
+
+          case "${{ matrix.os }}" in
+            linux) LD_LIBRARY_PATH=target/release ./ffi-shared ;;
+            macos) DYLD_LIBRARY_PATH=target/release ./ffi-shared ;;
+          esac
+
+          libs=$(cargo rustc --release -p umineko-ffi --lib --all-features --crate-type staticlib -- --print native-static-libs 2>&1 | sed -n 's/^note: native-static-libs: //p' | tail -n1)
+          if [ -z "$libs" ]; then
+            echo "::error::rustc reported no native static libs; the link would fail obscurely"
+            exit 1
+          fi
+          echo "native static libs: $libs"
+
+          cc -std=c11 -Wall -Wextra -Iinclude crates/umineko-ffi/tests/ffi.c target/release/libumineko.a $libs -o ffi-static
+          ./ffi-static
+
+  test-python:
+    name: Test Python Binding (${{ matrix.arch }}-${{ matrix.os }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: linux
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: macos
+            arch: x86_64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+          - os: macos
+            arch: aarch64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update && sudo apt-get install -y cmake clang libclang-dev golang-go perl
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install cmake go
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: test-python-${{ matrix.arch }}-${{ matrix.os }}
+
+      - name: Build FFI
+        run: cargo build --release -p umineko-ffi --all-features
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+
+      - name: Run pytest
+        working-directory: ports/python
+        run: uv run pytest
+
+  test-doc:
+    name: Test Docs
+    runs-on: ubuntu-latest
+
+    env:
+      RUSTDOCFLAGS: -D warnings
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake clang libclang-dev golang-go perl
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: test-doc
+
+      - name: Build Docs
+        run: cargo doc --workspace --release --no-deps --all-features
+
+  osv-scanner:
+    name: OSV-Scanner
+    uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.5.0"
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+  update:
+    needs: [test, test-ffi, test-python, test-doc]
+    name: Update
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+
+      - name: Update version in Cargo.toml and pyproject.toml
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+
+          sed -i "s/^version = .*/version = \"${VERSION}\"/" Cargo.toml
+          sed -i -E "s|(path = \"crates/[a-z0-9-]+\", version = \")[^\"]+|\1${VERSION}|" Cargo.toml
+
+          stamped=$(grep -c "version = \"${VERSION}\"" Cargo.toml)
+          if [ "$stamped" -lt 50 ]; then
+            echo "::error::only $stamped versions were stamped in Cargo.toml; the workspace bump is incomplete"
+            exit 1
+          fi
+
+          cargo update --workspace
+
+          cd ports/python
+          sed -i "s/^version = .*/version = \"${VERSION}\"/" pyproject.toml
+          uv lock
+
+          echo "Umineko ${VERSION}"
+
+      - name: Commit and push version update
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add Cargo.toml Cargo.lock ports/python/pyproject.toml ports/python/uv.lock
+
+          if git diff --cached --quiet; then
+            echo "No changes; skipping commit."
+          else
+            git commit -m "Release ${VERSION}"
+            git push origin main
+          fi
+
+          echo "Almost ready for releasing [Umineko ${VERSION}]. Good luck!"
+
+  build:
+    name: Build (${{ matrix.arch }}-${{ matrix.os }})
+    needs: update
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: linux
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: macos
+            arch: x86_64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+          - os: macos
+            arch: aarch64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y cmake clang libclang-dev golang-go perl
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install cmake go
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: build-${{ matrix.arch }}-${{ matrix.os }}
+
+      - name: Build Library
+        run: cargo build --release -p umineko -p umineko-ffi --all-features
+
+      - name: Collect the library
+        run: |
+          mkdir -p staging/lib staging/include
+
+          cp target/release/libumineko.* staging/lib/
+          cp include/umineko.h staging/include/
+
+          case "${{ matrix.os }}" in
+            linux) shared=libumineko.so ;;
+            macos) shared=libumineko.dylib ;;
+          esac
+          for required in "lib/$shared" lib/libumineko.a lib/libumineko.rlib include/umineko.h; do
+            if [ ! -f "staging/$required" ]; then
+              echo "::error::$required is missing from the library"
+              exit 1
+            fi
+          done
+
+          find staging -type f | sort
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: library-${{ matrix.target }}
+          path: staging
+          if-no-files-found: error
+
+  build-python:
+    name: Build Python Binding (${{ matrix.arch }}-${{ matrix.os }})
+    needs: update
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            container: quay.io/pypa/manylinux_2_28_x86_64
+            wheel_tag: manylinux_2_28_x86_64
+          - os: linux
+            arch: aarch64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            container: quay.io/pypa/manylinux_2_28_aarch64
+            wheel_tag: manylinux_2_28_aarch64
+          - os: macos
+            arch: x86_64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+            deployment_target: "10.12"
+            wheel_tag: macosx_10_12_x86_64
+          - os: macos
+            arch: aarch64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+            deployment_target: "11.0"
+            wheel_tag: macosx_11_0_arm64
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          dnf install -y 'dnf-command(config-manager)'
+          dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+          dnf install -y cmake clang clang-devel golang perl curl git gh
+
+      - name: Mark the workspace as a safe directory
+        if: runner.os == 'Linux'
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install cmake go
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: build-python-${{ matrix.arch }}-${{ matrix.os }}
+
+      - name: Build the shared library
+        run: cargo build --release -p umineko-ffi --all-features
+        env:
+          MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deployment_target }}
+
+      - name: Copy the shared library into the package (Linux)
+        if: runner.os == 'Linux'
+        run: cp target/release/libumineko.so ports/python/src/umineko/
+
+      - name: Copy the shared library into the package (macOS)
+        if: runner.os == 'macOS'
+        run: cp target/release/libumineko.dylib ports/python/src/umineko/
+
+      - name: Make a CPython interpreter available
+        if: runner.os == 'Linux'
+        run: echo "/opt/python/cp312-cp312/bin" >> "$GITHUB_PATH"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+
+      - name: Build the wheel
+        working-directory: ports/python
+        run: uv build --wheel
+
+      - name: Tag the wheel for this platform
+        working-directory: ports/python
+        run: uvx --from wheel wheel tags --platform-tag ${{ matrix.wheel_tag }} --remove dist/*.whl
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-wheel-${{ matrix.target }}
+          path: ports/python/dist/*.whl
+          if-no-files-found: error
+
+  package:
+    name: Package (${{ matrix.arch }}-${{ matrix.os }})
+    needs: [build, build-python]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            target: x86_64-unknown-linux-gnu
+            shared: libumineko.so
+          - os: linux
+            arch: aarch64
+            target: aarch64-unknown-linux-gnu
+            shared: libumineko.so
+          - os: macos
+            arch: x86_64
+            target: x86_64-apple-darwin
+            shared: libumineko.dylib
+          - os: macos
+            arch: aarch64
+            target: aarch64-apple-darwin
+            shared: libumineko.dylib
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y p7zip-full xz-utils zip
+
+      - name: Download the built library
+        uses: actions/download-artifact@v4
+        with:
+          name: library-${{ matrix.target }}
+          path: library
+
+      - name: Download the built wheel
+        uses: actions/download-artifact@v4
+        with:
+          name: python-wheel-${{ matrix.target }}
+          path: wheel
+
+      - name: Assemble
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+
+          name="umineko-${VERSION}-${{ matrix.arch }}-${{ matrix.os }}"
+          mkdir -p "staging/$name/lib" "staging/$name/include" "staging/$name/wheel"
+
+          cp library/lib/libumineko.* "staging/$name/lib/"
+          cp library/include/umineko.h "staging/$name/include/"
+          cp wheel/*.whl "staging/$name/wheel/"
+          cp README.md "staging/$name/"
+          cp LICENSE "staging/$name/LICENSE.md"
+
+          for required in "lib/${{ matrix.shared }}" lib/libumineko.a lib/libumineko.rlib include/umineko.h README.md LICENSE.md; do
+            if [ ! -f "staging/$name/$required" ]; then
+              echo "::error::$required is missing from the archive"
+              exit 1
+            fi
+          done
+
+          if [ -z "$(ls -A "staging/$name/wheel")" ]; then
+            echo "::error::wheel/ is missing from the archive"
+            exit 1
+          fi
+
+          find "staging/$name" -type f | sort
+
+          echo "NAME=$name" >> "$GITHUB_ENV"
+
+      - name: Archive
+        working-directory: staging
+        run: |
+          tar -czf "../$NAME.tar.gz" "$NAME"
+          tar -cJf "../$NAME.tar.xz" "$NAME"
+          zip -qr "../$NAME.zip" "$NAME"
+          7z a -bso0 "../$NAME.7z" "$NAME"
+
+      - name: Upload the archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ matrix.target }}
+          path: |
+            ${{ env.NAME }}.tar.gz
+            ${{ env.NAME }}.tar.xz
+            ${{ env.NAME }}.zip
+            ${{ env.NAME }}.7z
+          if-no-files-found: error
+
+      - name: Attach to the release
+        run: gh release upload "$TAG" "$NAME.tar.gz" "$NAME.tar.xz" "$NAME.zip" "$NAME.7z" --clobber
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          GH_TOKEN: ${{ github.token }}
+
+  publish:
+    name: Publish
+    needs: [build, build-python]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake clang libclang-dev golang-go perl
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: publish
+
+      - name: Publish to crates.io
+        run: cargo publish --workspace
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  publish-python:
+    name: Publish Python Binding
+    needs: [build, build-python]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download the built wheels
+        uses: actions/download-artifact@v4
+        with:
+          pattern: python-wheel-*
+          path: dist
+          merge-multiple: true
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist

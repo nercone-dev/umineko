@@ -1,0 +1,27 @@
+[package]
+name = "umineko"
+description = "Pure-Rust implementations of everything"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-url = { workspace = true, default-features = true }
+umineko-helpers = { workspace = true, default-features = true }
+umineko-hash = { workspace = true, default-features = true, optional = true }
+umineko-crypto = { workspace = true, default-features = true, optional = true }
+umineko-codec = { workspace = true, default-features = true, optional = true }
+umineko-protocol = { workspace = true, default-features = true, optional = true }
+umineko-provider = { workspace = true, default-features = true, optional = true }
+umineko-provider-auto = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["hash", "crypto", "codec", "protocol", "provider", "auto"]
+hash = ["dep:umineko-hash"]
+crypto = ["dep:umineko-crypto"]
+codec = ["dep:umineko-codec"]
+protocol = ["dep:umineko-protocol"]
+provider = ["dep:umineko-provider"]
+auto = ["provider", "dep:umineko-provider-auto"]

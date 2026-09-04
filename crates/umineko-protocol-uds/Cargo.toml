@@ -1,0 +1,11 @@
+[package]
+name = "umineko-protocol-uds"
+description = "Unix domain sockets"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }

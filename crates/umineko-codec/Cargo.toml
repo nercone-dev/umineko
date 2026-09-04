@@ -1,0 +1,37 @@
+[package]
+name = "umineko-codec"
+description = "Encodings and compression"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-codec-base = { workspace = true, default-features = true, optional = true }
+umineko-codec-brotli = { workspace = true, default-features = true, optional = true }
+umineko-codec-deflate = { workspace = true, default-features = true, optional = true }
+umineko-codec-gzip = { workspace = true, default-features = true, optional = true }
+umineko-codec-huffman = { workspace = true, default-features = true, optional = true }
+umineko-codec-lz4 = { workspace = true, default-features = true, optional = true }
+umineko-codec-lz77 = { workspace = true, default-features = true, optional = true }
+umineko-codec-lz78 = { workspace = true, default-features = true, optional = true }
+umineko-codec-lzss = { workspace = true, default-features = true, optional = true }
+umineko-codec-lzma = { workspace = true, default-features = true, optional = true }
+umineko-codec-rle = { workspace = true, default-features = true, optional = true }
+umineko-codec-zstandard = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["base", "brotli", "deflate", "gzip", "huffman", "lz4", "lz77", "lz78", "lzss", "lzma", "rle", "zstandard"]
+base = ["dep:umineko-codec-base"]
+brotli = ["dep:umineko-codec-brotli"]
+deflate = ["dep:umineko-codec-deflate"]
+gzip = ["dep:umineko-codec-gzip"]
+huffman = ["dep:umineko-codec-huffman"]
+lz4 = ["dep:umineko-codec-lz4"]
+lz77 = ["dep:umineko-codec-lz77"]
+lz78 = ["dep:umineko-codec-lz78"]
+lzss = ["dep:umineko-codec-lzss"]
+lzma = ["dep:umineko-codec-lzma"]
+rle = ["dep:umineko-codec-rle"]
+zstandard = ["dep:umineko-codec-zstandard"]

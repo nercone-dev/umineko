@@ -1,0 +1,25 @@
+[package]
+name = "umineko-ffi"
+description = "C ABI"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+name = "umineko"
+crate-type = ["cdylib", "staticlib"]
+doc = false
+
+[dependencies]
+umineko = { workspace = true }
+
+[features]
+default = ["hash", "crypto", "codec", "protocol", "provider", "auto"]
+hash = ["umineko/hash"]
+crypto = ["umineko/crypto"]
+codec = ["umineko/codec"]
+protocol = ["umineko/protocol"]
+provider = ["umineko/provider"]
+auto = ["provider", "umineko/auto"]

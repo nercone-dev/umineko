@@ -1,0 +1,12 @@
+[package]
+name = "umineko-protocol-oauth"
+description = "OAuth"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-protocol-http = { workspace = true, default-features = true }
+umineko-url = { workspace = true, default-features = true }

@@ -1,0 +1,25 @@
+[package]
+name = "umineko-protocol-http"
+description = "HTTP"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true, default-features = true }
+umineko-url = { workspace = true, default-features = true }
+umineko-protocol-tcp = { workspace = true, default-features = true }
+umineko-protocol-tls = { workspace = true, default-features = true }
+umineko-protocol-uds = { workspace = true, default-features = true, optional = true }
+umineko-protocol-quic = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["http10", "http11", "http20", "http30", "websocket", "uds"]
+http10 = []
+http11 = []
+http20 = []
+http30 = ["dep:umineko-protocol-quic"]
+websocket = []
+uds = ["dep:umineko-protocol-uds"]

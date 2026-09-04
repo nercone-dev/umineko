@@ -1,0 +1,29 @@
+[package]
+name = "umineko-hash"
+description = "Hash functions"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-hash-md = { workspace = true, default-features = true, optional = true }
+umineko-hash-sha = { workspace = true, default-features = true, optional = true }
+umineko-hash-xxhash = { workspace = true, default-features = true, optional = true }
+umineko-hash-blake = { workspace = true, default-features = true, optional = true }
+umineko-hash-ripemd = { workspace = true, default-features = true, optional = true }
+umineko-hash-crc = { workspace = true, default-features = true, optional = true }
+umineko-hash-siphash = { workspace = true, default-features = true, optional = true }
+umineko-hash-sm3 = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["md", "sha", "xxhash", "blake", "ripemd", "crc", "siphash", "sm3"]
+md = ["dep:umineko-hash-md"]
+sha = ["dep:umineko-hash-sha"]
+xxhash = ["dep:umineko-hash-xxhash"]
+blake = ["dep:umineko-hash-blake"]
+ripemd = ["dep:umineko-hash-ripemd"]
+crc = ["dep:umineko-hash-crc"]
+siphash = ["dep:umineko-hash-siphash"]
+sm3 = ["dep:umineko-hash-sm3"]

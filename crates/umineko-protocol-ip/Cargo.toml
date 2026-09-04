@@ -1,0 +1,16 @@
+[package]
+name = "umineko-protocol-ip"
+description = "IP"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["ipv4", "ipv6"]
+ipv4 = []
+ipv6 = []
+
+[dependencies]
+umineko-helpers = { workspace = true }

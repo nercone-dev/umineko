@@ -1,0 +1,18 @@
+[package]
+name = "umineko-crypto-hybrid"
+description = "Hybrid post-quantum key exchange"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-crypto-ecdh = { workspace = true, default-features = true }
+umineko-crypto-mlkem = { workspace = true, default-features = true }
+
+[features]
+default = ["x25519mlkem768", "secp256r1mlkem768", "secp384r1mlkem1024"]
+x25519mlkem768 = []
+secp256r1mlkem768 = []
+secp384r1mlkem1024 = []

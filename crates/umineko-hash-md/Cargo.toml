@@ -1,0 +1,18 @@
+[package]
+name = "umineko-hash-md"
+description = "MD message digests"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["md2", "md4", "md5", "md6"]
+md2 = []
+md4 = []
+md5 = []
+md6 = []
+
+[dependencies]
+umineko-helpers = { workspace = true }

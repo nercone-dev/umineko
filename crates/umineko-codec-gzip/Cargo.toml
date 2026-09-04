@@ -1,0 +1,13 @@
+[package]
+name = "umineko-codec-gzip"
+description = "gzip compression"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-codec-deflate = { workspace = true, default-features = true }
+umineko-hash-crc = { workspace = true, features = ["crc32"] }
+umineko-helpers = { workspace = true }

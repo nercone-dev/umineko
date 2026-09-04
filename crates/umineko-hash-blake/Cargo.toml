@@ -1,0 +1,16 @@
+[package]
+name = "umineko-hash-blake"
+description = "BLAKE hash functions"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["blake2", "blake3"]
+blake2 = []
+blake3 = []
+
+[dependencies]
+umineko-helpers = { workspace = true }

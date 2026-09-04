@@ -1,0 +1,18 @@
+[package]
+name = "umineko-hash-sha"
+description = "SHA message digests"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["sha0", "sha1", "sha2", "sha3"]
+sha0 = []
+sha1 = []
+sha2 = []
+sha3 = []
+
+[dependencies]
+umineko-helpers = { workspace = true }

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["uv_build>=0.9.5,<0.10.0"]
+build-backend = "uv_build"
+
+[project]
+name = "umineko"
+version = "0.1.0"
+description = "Python bindings for Umineko"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+
+[project.urls]
+Repository = "https://github.com/nercone-dev/umineko/"
+
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio"]

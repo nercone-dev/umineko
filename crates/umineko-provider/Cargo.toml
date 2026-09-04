@@ -1,0 +1,38 @@
+[package]
+name = "umineko-provider"
+description = "Provider contracts and registration"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }
+umineko-protocol-ip = { workspace = true, default-features = true, optional = true }
+umineko-protocol-icmp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-uds = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tls = { workspace = true, default-features = true, optional = true }
+umineko-protocol-quic = { workspace = true, default-features = true, optional = true }
+umineko-protocol-http = { workspace = true, default-features = true, optional = true }
+umineko-protocol-dns = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["ip", "icmp", "uds", "tcp", "udp", "hash", "crypto", "tls", "quic", "http", "dns", "codec"]
+ip = ["dep:umineko-protocol-ip"]
+icmp = ["dep:umineko-protocol-icmp"]
+uds = ["dep:umineko-protocol-uds"]
+tcp = ["dep:umineko-protocol-tcp"]
+udp = ["dep:umineko-protocol-udp"]
+hash = []
+crypto = []
+tls = ["dep:umineko-protocol-tls"]
+quic = ["dep:umineko-protocol-quic"]
+http = ["dep:umineko-protocol-http"]
+dns = ["dep:umineko-protocol-dns"]
+codec = []
+
+[dev-dependencies]
+umineko-protocol-tcp = { workspace = true, default-features = true }

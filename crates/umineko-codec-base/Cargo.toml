@@ -1,0 +1,16 @@
+[package]
+name = "umineko-codec-base"
+description = "Base16, Base32, Base58, Base64 and Base85 encodings"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["base16", "base32", "base58", "base64", "base85"]
+base16 = []
+base32 = []
+base58 = []
+base64 = []
+base85 = []

@@ -1,0 +1,11 @@
+[package]
+name = "umineko-hash-sm3"
+description = "SM3 message digest"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }

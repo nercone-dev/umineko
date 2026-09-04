@@ -1,0 +1,13 @@
+[package]
+name = "umineko-codec-deflate"
+description = "DEFLATE compression"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-codec-huffman = { workspace = true, default-features = true }
+umineko-codec-lz77 = { workspace = true, default-features = true }
+umineko-helpers = { workspace = true }

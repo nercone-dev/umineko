@@ -1,0 +1,61 @@
+[package]
+name = "umineko-protocol"
+description = "Network protocols"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-protocol-ip = { workspace = true, default-features = true, optional = true }
+umineko-protocol-icmp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tls = { workspace = true, default-features = true, optional = true }
+umineko-protocol-uds = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-quic = { workspace = true, default-features = true, optional = true }
+umineko-protocol-http = { workspace = true, default-features = true, optional = true }
+umineko-protocol-dns = { workspace = true, default-features = true, optional = true }
+umineko-protocol-mail = { workspace = true, default-features = true, optional = true }
+umineko-protocol-smtp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-imap = { workspace = true, default-features = true, optional = true }
+umineko-protocol-pop3 = { workspace = true, default-features = true, optional = true }
+umineko-protocol-ftp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-ssh = { workspace = true, default-features = true, optional = true }
+umineko-protocol-ntp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-dhcp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-arp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-ndp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-socks = { workspace = true, default-features = true, optional = true }
+umineko-protocol-mqtt = { workspace = true, default-features = true, optional = true }
+umineko-protocol-coap = { workspace = true, default-features = true, optional = true }
+umineko-protocol-oauth = { workspace = true, default-features = true, optional = true }
+umineko-protocol-jwt = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["ip", "icmp", "tls", "uds", "tcp", "udp", "quic", "http", "dns", "mail", "smtp", "imap", "pop3", "ftp", "ssh", "ntp", "dhcp", "arp", "ndp", "socks", "mqtt", "coap", "oauth", "jwt"]
+ip = ["dep:umineko-protocol-ip"]
+icmp = ["dep:umineko-protocol-icmp"]
+tls = ["dep:umineko-protocol-tls"]
+uds = ["dep:umineko-protocol-uds"]
+tcp = ["dep:umineko-protocol-tcp"]
+udp = ["dep:umineko-protocol-udp"]
+quic = ["dep:umineko-protocol-quic"]
+http = ["dep:umineko-protocol-http"]
+dns = ["dep:umineko-protocol-dns"]
+mail = ["dep:umineko-protocol-mail"]
+smtp = ["dep:umineko-protocol-smtp"]
+imap = ["dep:umineko-protocol-imap"]
+pop3 = ["dep:umineko-protocol-pop3"]
+ftp = ["dep:umineko-protocol-ftp"]
+ssh = ["dep:umineko-protocol-ssh"]
+ntp = ["dep:umineko-protocol-ntp"]
+dhcp = ["dep:umineko-protocol-dhcp"]
+arp = ["dep:umineko-protocol-arp"]
+ndp = ["dep:umineko-protocol-ndp"]
+socks = ["dep:umineko-protocol-socks"]
+mqtt = ["dep:umineko-protocol-mqtt"]
+coap = ["dep:umineko-protocol-coap"]
+oauth = ["dep:umineko-protocol-oauth"]
+jwt = ["dep:umineko-protocol-jwt"]

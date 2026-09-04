@@ -1,0 +1,20 @@
+[package]
+name = "umineko-provider-wasi"
+description = "WASI provider"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-provider = { workspace = true, features = ["tcp", "udp", "http"] }
+umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-http = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["tcp", "udp", "http"]
+tcp = ["umineko-provider/tcp", "dep:umineko-protocol-tcp"]
+udp = ["umineko-provider/udp", "dep:umineko-protocol-udp"]
+http = ["umineko-provider/http", "dep:umineko-protocol-http"]

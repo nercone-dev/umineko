@@ -1,0 +1,95 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+repository = "https://github.com/nercone-dev/umineko/"
+license = "MIT"
+
+[workspace.dependencies]
+umineko = { path = "crates/umineko", version = "0.1.0", default-features = false }
+umineko-ffi = { path = "crates/umineko-ffi", version = "0.1.0", default-features = false }
+umineko-url = { path = "crates/umineko-url", version = "0.1.0", default-features = false }
+umineko-helpers = { path = "crates/umineko-helpers", version = "0.1.0", default-features = false }
+umineko-hash = { path = "crates/umineko-hash", version = "0.1.0", default-features = false }
+umineko-hash-md = { path = "crates/umineko-hash-md", version = "0.1.0", default-features = false }
+umineko-hash-sha = { path = "crates/umineko-hash-sha", version = "0.1.0", default-features = false }
+umineko-hash-xxhash = { path = "crates/umineko-hash-xxhash", version = "0.1.0", default-features = false }
+umineko-hash-blake = { path = "crates/umineko-hash-blake", version = "0.1.0", default-features = false }
+umineko-hash-ripemd = { path = "crates/umineko-hash-ripemd", version = "0.1.0", default-features = false }
+umineko-hash-crc = { path = "crates/umineko-hash-crc", version = "0.1.0", default-features = false }
+umineko-hash-siphash = { path = "crates/umineko-hash-siphash", version = "0.1.0", default-features = false }
+umineko-hash-sm3 = { path = "crates/umineko-hash-sm3", version = "0.1.0", default-features = false }
+umineko-codec = { path = "crates/umineko-codec", version = "0.1.0", default-features = false }
+umineko-codec-base = { path = "crates/umineko-codec-base", version = "0.1.0", default-features = false }
+umineko-codec-brotli = { path = "crates/umineko-codec-brotli", version = "0.1.0", default-features = false }
+umineko-codec-deflate = { path = "crates/umineko-codec-deflate", version = "0.1.0", default-features = false }
+umineko-codec-gzip = { path = "crates/umineko-codec-gzip", version = "0.1.0", default-features = false }
+umineko-codec-huffman = { path = "crates/umineko-codec-huffman", version = "0.1.0", default-features = false }
+umineko-codec-lz4 = { path = "crates/umineko-codec-lz4", version = "0.1.0", default-features = false }
+umineko-codec-lz77 = { path = "crates/umineko-codec-lz77", version = "0.1.0", default-features = false }
+umineko-codec-lz78 = { path = "crates/umineko-codec-lz78", version = "0.1.0", default-features = false }
+umineko-codec-lzss = { path = "crates/umineko-codec-lzss", version = "0.1.0", default-features = false }
+umineko-codec-lzma = { path = "crates/umineko-codec-lzma", version = "0.1.0", default-features = false }
+umineko-codec-rle = { path = "crates/umineko-codec-rle", version = "0.1.0", default-features = false }
+umineko-codec-zstandard = { path = "crates/umineko-codec-zstandard", version = "0.1.0", default-features = false }
+umineko-crypto = { path = "crates/umineko-crypto", version = "0.1.0", default-features = false }
+umineko-crypto-rsa = { path = "crates/umineko-crypto-rsa", version = "0.1.0", default-features = false }
+umineko-crypto-des = { path = "crates/umineko-crypto-des", version = "0.1.0", default-features = false }
+umineko-crypto-aes = { path = "crates/umineko-crypto-aes", version = "0.1.0", default-features = false }
+umineko-crypto-chacha20 = { path = "crates/umineko-crypto-chacha20", version = "0.1.0", default-features = false }
+umineko-crypto-poly1305 = { path = "crates/umineko-crypto-poly1305", version = "0.1.0", default-features = false }
+umineko-crypto-ecdsa = { path = "crates/umineko-crypto-ecdsa", version = "0.1.0", default-features = false }
+umineko-crypto-eddsa = { path = "crates/umineko-crypto-eddsa", version = "0.1.0", default-features = false }
+umineko-crypto-ecdh = { path = "crates/umineko-crypto-ecdh", version = "0.1.0", default-features = false }
+umineko-crypto-mlkem = { path = "crates/umineko-crypto-mlkem", version = "0.1.0", default-features = false }
+umineko-crypto-mldsa = { path = "crates/umineko-crypto-mldsa", version = "0.1.0", default-features = false }
+umineko-crypto-slhdsa = { path = "crates/umineko-crypto-slhdsa", version = "0.1.0", default-features = false }
+umineko-crypto-hqc = { path = "crates/umineko-crypto-hqc", version = "0.1.0", default-features = false }
+umineko-crypto-ascon = { path = "crates/umineko-crypto-ascon", version = "0.1.0", default-features = false }
+umineko-crypto-hkdf = { path = "crates/umineko-crypto-hkdf", version = "0.1.0", default-features = false }
+umineko-crypto-scrypt = { path = "crates/umineko-crypto-scrypt", version = "0.1.0", default-features = false }
+umineko-crypto-pbkdf2 = { path = "crates/umineko-crypto-pbkdf2", version = "0.1.0", default-features = false }
+umineko-crypto-argon2 = { path = "crates/umineko-crypto-argon2", version = "0.1.0", default-features = false }
+umineko-crypto-hybrid = { path = "crates/umineko-crypto-hybrid", version = "0.1.0", default-features = false }
+umineko-protocol = { path = "crates/umineko-protocol", version = "0.1.0", default-features = false }
+umineko-protocol-ip = { path = "crates/umineko-protocol-ip", version = "0.1.0", default-features = false }
+umineko-protocol-icmp = { path = "crates/umineko-protocol-icmp", version = "0.1.0", default-features = false }
+umineko-protocol-tls = { path = "crates/umineko-protocol-tls", version = "0.1.0", default-features = false }
+umineko-protocol-uds = { path = "crates/umineko-protocol-uds", version = "0.1.0", default-features = false }
+umineko-protocol-tcp = { path = "crates/umineko-protocol-tcp", version = "0.1.0", default-features = false }
+umineko-protocol-udp = { path = "crates/umineko-protocol-udp", version = "0.1.0", default-features = false }
+umineko-protocol-quic = { path = "crates/umineko-protocol-quic", version = "0.1.0", default-features = false }
+umineko-protocol-http = { path = "crates/umineko-protocol-http", version = "0.1.0", default-features = false }
+umineko-protocol-dns = { path = "crates/umineko-protocol-dns", version = "0.1.0", default-features = false }
+umineko-protocol-mail = { path = "crates/umineko-protocol-mail", version = "0.1.0", default-features = false }
+umineko-protocol-smtp = { path = "crates/umineko-protocol-smtp", version = "0.1.0", default-features = false }
+umineko-protocol-imap = { path = "crates/umineko-protocol-imap", version = "0.1.0", default-features = false }
+umineko-protocol-pop3 = { path = "crates/umineko-protocol-pop3", version = "0.1.0", default-features = false }
+umineko-protocol-ftp = { path = "crates/umineko-protocol-ftp", version = "0.1.0", default-features = false }
+umineko-protocol-ssh = { path = "crates/umineko-protocol-ssh", version = "0.1.0", default-features = false }
+umineko-protocol-ntp = { path = "crates/umineko-protocol-ntp", version = "0.1.0", default-features = false }
+umineko-protocol-dhcp = { path = "crates/umineko-protocol-dhcp", version = "0.1.0", default-features = false }
+umineko-protocol-arp = { path = "crates/umineko-protocol-arp", version = "0.1.0", default-features = false }
+umineko-protocol-ndp = { path = "crates/umineko-protocol-ndp", version = "0.1.0", default-features = false }
+umineko-protocol-socks = { path = "crates/umineko-protocol-socks", version = "0.1.0", default-features = false }
+umineko-protocol-mqtt = { path = "crates/umineko-protocol-mqtt", version = "0.1.0", default-features = false }
+umineko-protocol-coap = { path = "crates/umineko-protocol-coap", version = "0.1.0", default-features = false }
+umineko-protocol-oauth = { path = "crates/umineko-protocol-oauth", version = "0.1.0", default-features = false }
+umineko-protocol-jwt = { path = "crates/umineko-protocol-jwt", version = "0.1.0", default-features = false }
+umineko-provider = { path = "crates/umineko-provider", version = "0.1.0", default-features = false }
+umineko-provider-auto = { path = "crates/umineko-provider-auto", version = "0.1.0", default-features = false }
+umineko-provider-linux = { path = "crates/umineko-provider-linux", version = "0.1.0", default-features = false }
+umineko-provider-darwin = { path = "crates/umineko-provider-darwin", version = "0.1.0", default-features = false }
+umineko-provider-windows = { path = "crates/umineko-provider-windows", version = "0.1.0", default-features = false }
+umineko-provider-android = { path = "crates/umineko-provider-android", version = "0.1.0", default-features = false }
+umineko-provider-freebsd = { path = "crates/umineko-provider-freebsd", version = "0.1.0", default-features = false }
+umineko-provider-openbsd = { path = "crates/umineko-provider-openbsd", version = "0.1.0", default-features = false }
+umineko-provider-netbsd = { path = "crates/umineko-provider-netbsd", version = "0.1.0", default-features = false }
+umineko-provider-wasi = { path = "crates/umineko-provider-wasi", version = "0.1.0", default-features = false }
+
+[profile.release]
+lto = true

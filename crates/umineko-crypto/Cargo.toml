@@ -1,0 +1,49 @@
+[package]
+name = "umineko-crypto"
+description = "Cryptography"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-crypto-rsa = { workspace = true, default-features = true, optional = true }
+umineko-crypto-des = { workspace = true, default-features = true, optional = true }
+umineko-crypto-aes = { workspace = true, default-features = true, optional = true }
+umineko-crypto-chacha20 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-poly1305 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-ecdsa = { workspace = true, default-features = true, optional = true }
+umineko-crypto-eddsa = { workspace = true, default-features = true, optional = true }
+umineko-crypto-ecdh = { workspace = true, default-features = true, optional = true }
+umineko-crypto-mlkem = { workspace = true, default-features = true, optional = true }
+umineko-crypto-mldsa = { workspace = true, default-features = true, optional = true }
+umineko-crypto-slhdsa = { workspace = true, default-features = true, optional = true }
+umineko-crypto-hqc = { workspace = true, default-features = true, optional = true }
+umineko-crypto-ascon = { workspace = true, default-features = true, optional = true }
+umineko-crypto-hkdf = { workspace = true, default-features = true, optional = true }
+umineko-crypto-scrypt = { workspace = true, default-features = true, optional = true }
+umineko-crypto-pbkdf2 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-argon2 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-hybrid = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["rsa", "des", "aes", "chacha20", "poly1305", "ecdsa", "eddsa", "ecdh", "mlkem", "mldsa", "slhdsa", "hqc", "ascon", "hkdf", "scrypt", "pbkdf2", "argon2", "hybrid"]
+rsa = ["dep:umineko-crypto-rsa"]
+des = ["dep:umineko-crypto-des"]
+aes = ["dep:umineko-crypto-aes"]
+chacha20 = ["dep:umineko-crypto-chacha20"]
+poly1305 = ["dep:umineko-crypto-poly1305"]
+ecdsa = ["dep:umineko-crypto-ecdsa"]
+eddsa = ["dep:umineko-crypto-eddsa"]
+ecdh = ["dep:umineko-crypto-ecdh"]
+mlkem = ["dep:umineko-crypto-mlkem"]
+mldsa = ["dep:umineko-crypto-mldsa"]
+slhdsa = ["dep:umineko-crypto-slhdsa"]
+hqc = ["dep:umineko-crypto-hqc"]
+ascon = ["dep:umineko-crypto-ascon"]
+hkdf = ["dep:umineko-crypto-hkdf"]
+scrypt = ["dep:umineko-crypto-scrypt"]
+pbkdf2 = ["dep:umineko-crypto-pbkdf2"]
+argon2 = ["dep:umineko-crypto-argon2"]
+hybrid = ["dep:umineko-crypto-hybrid"]

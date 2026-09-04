@@ -1,0 +1,28 @@
+[package]
+name = "umineko-provider-netbsd"
+description = "NetBSD provider"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-provider = { workspace = true, features = ["ip", "icmp", "uds", "tcp", "udp", "hash", "crypto", "tls"] }
+umineko-protocol-ip = { workspace = true, default-features = true, optional = true }
+umineko-protocol-icmp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-uds = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-tls = { workspace = true, default-features = true, optional = true }
+
+[features]
+default = ["ip", "icmp", "uds", "tcp", "udp", "hash", "crypto", "tls"]
+ip = ["umineko-provider/ip", "dep:umineko-protocol-ip"]
+icmp = ["umineko-provider/icmp", "dep:umineko-protocol-icmp", "dep:umineko-protocol-ip"]
+uds = ["umineko-provider/uds", "dep:umineko-protocol-uds"]
+tcp = ["umineko-provider/tcp", "dep:umineko-protocol-tcp"]
+udp = ["umineko-provider/udp", "dep:umineko-protocol-udp"]
+hash = ["umineko-provider/hash"]
+crypto = ["umineko-provider/crypto"]
+tls = ["umineko-provider/tls", "dep:umineko-protocol-tls"]
