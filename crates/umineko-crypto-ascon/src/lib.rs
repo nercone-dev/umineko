@@ -8,4 +8,4 @@ pub mod errors;
 pub mod ascon;
 
 pub use errors::{AsconError};
-pub use ascon::{AsconAEAD128, AsconHash256, AsconXOF128, AsconCXOF128};
+pub use ascon::{Ascon, AsconAEAD128, AsconHash256, AsconXOF128, AsconCXOF128};

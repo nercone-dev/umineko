@@ -9,3 +9,4 @@ license.workspace = true
 
 [dependencies]
 umineko-helpers = { workspace = true }
+umineko-math = { workspace = true, default-features = true }

@@ -7,5 +7,13 @@ rust-version.workspace = true
 repository.workspace = true
 license.workspace = true
 
+[features]
+default = ["hmac"]
+hmac = ["dep:umineko-hash-hmac"]
+
 [dependencies]
 umineko-helpers = { workspace = true }
+umineko-hash-hmac = { workspace = true, default-features = true, optional = true }
+
+[dev-dependencies]
+umineko-hash-sha = { workspace = true, default-features = true }

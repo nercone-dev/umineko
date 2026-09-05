@@ -1,0 +1,22 @@
+[package]
+name = "umineko-hash-hmac"
+description = "HMAC keyed hash"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["sha", "md", "ripemd", "sm3"]
+sha = ["dep:umineko-hash-sha"]
+md = ["dep:umineko-hash-md"]
+ripemd = ["dep:umineko-hash-ripemd"]
+sm3 = ["dep:umineko-hash-sm3"]
+
+[dependencies]
+umineko-helpers = { workspace = true }
+umineko-hash-sha = { workspace = true, default-features = true, optional = true }
+umineko-hash-md = { workspace = true, default-features = true, optional = true }
+umineko-hash-ripemd = { workspace = true, default-features = true, optional = true }
+umineko-hash-sm3 = { workspace = true, default-features = true, optional = true }

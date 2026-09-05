@@ -9,3 +9,4 @@ license.workspace = true
 
 [dependencies]
 umineko-helpers = { workspace = true }
+umineko-hash-blake = { workspace = true, default-features = true }

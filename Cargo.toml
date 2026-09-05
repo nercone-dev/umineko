@@ -14,6 +14,7 @@ umineko = { path = "crates/umineko", version = "0.1.0", default-features = false
 umineko-ffi = { path = "crates/umineko-ffi", version = "0.1.0", default-features = false }
 umineko-url = { path = "crates/umineko-url", version = "0.1.0", default-features = false }
 umineko-helpers = { path = "crates/umineko-helpers", version = "0.1.0", default-features = false }
+umineko-math = { path = "crates/umineko-math", version = "0.1.0", default-features = false }
 umineko-hash = { path = "crates/umineko-hash", version = "0.1.0", default-features = false }
 umineko-hash-md = { path = "crates/umineko-hash-md", version = "0.1.0", default-features = false }
 umineko-hash-sha = { path = "crates/umineko-hash-sha", version = "0.1.0", default-features = false }
@@ -23,6 +24,7 @@ umineko-hash-ripemd = { path = "crates/umineko-hash-ripemd", version = "0.1.0", 
 umineko-hash-crc = { path = "crates/umineko-hash-crc", version = "0.1.0", default-features = false }
 umineko-hash-siphash = { path = "crates/umineko-hash-siphash", version = "0.1.0", default-features = false }
 umineko-hash-sm3 = { path = "crates/umineko-hash-sm3", version = "0.1.0", default-features = false }
+umineko-hash-hmac = { path = "crates/umineko-hash-hmac", version = "0.1.0", default-features = false }
 umineko-codec = { path = "crates/umineko-codec", version = "0.1.0", default-features = false }
 umineko-codec-base = { path = "crates/umineko-codec-base", version = "0.1.0", default-features = false }
 umineko-codec-brotli = { path = "crates/umineko-codec-brotli", version = "0.1.0", default-features = false }

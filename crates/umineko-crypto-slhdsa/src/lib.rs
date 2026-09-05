@@ -9,4 +9,4 @@ pub mod errors;
 pub mod slhdsa;
 
 pub use errors::{SLHDSAError};
-pub use slhdsa::{SLHDSA, SLHDSAPrivateKey, SLHDSAPublicKey, SLHDSASignature};
+pub use slhdsa::{SLHDSA, SLHDSAAddress, SLHDSAPart, SLHDSAPrivateKey, SLHDSAPublicKey, SLHDSASignature};

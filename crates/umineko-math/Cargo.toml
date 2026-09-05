@@ -1,0 +1,17 @@
+[package]
+name = "umineko-math"
+description = "Arbitrary precision arithmetic and elliptic curves"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[features]
+default = ["integer", "modulus", "prime", "weierstrass", "edwards", "ladder"]
+integer = []
+modulus = ["integer"]
+prime = ["modulus"]
+weierstrass = ["modulus"]
+edwards = ["modulus"]
+ladder = ["modulus"]

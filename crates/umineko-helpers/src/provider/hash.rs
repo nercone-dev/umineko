@@ -5,6 +5,7 @@ use crate::provider::registry::ProviderRegistry;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct HashProviderRequest<'a> {
     pub algorithm: &'static str,
+    pub digest: Option<&'static str>,
     pub key: Option<&'a [u8]>,
     pub seed: Option<u64>,
     pub digest_size: Option<usize>,
@@ -14,7 +15,12 @@ pub struct HashProviderRequest<'a> {
 
 impl<'a> HashProviderRequest<'a> {
     pub fn new(algorithm: &'static str) -> Self {
-        Self { algorithm, key: None, seed: None, digest_size: None, customization: None, streaming: true }
+        Self { algorithm, digest: None, key: None, seed: None, digest_size: None, customization: None, streaming: true }
+    }
+
+    /// Names the hash a keyed construction such as HMAC is built over.
+    pub fn with_digest(self, digest: &'static str) -> Self {
+        Self { digest: Some(digest), ..self }
     }
 
     pub fn with_key(self, key: &'a [u8]) -> Self {

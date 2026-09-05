@@ -10,6 +10,7 @@ license.workspace = true
 [dependencies]
 umineko-url = { workspace = true, default-features = true }
 umineko-helpers = { workspace = true, default-features = true }
+umineko-math = { workspace = true, default-features = true }
 umineko-hash = { workspace = true, default-features = true, optional = true }
 umineko-crypto = { workspace = true, default-features = true, optional = true }
 umineko-codec = { workspace = true, default-features = true, optional = true }

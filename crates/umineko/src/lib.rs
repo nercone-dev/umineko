@@ -3,6 +3,7 @@
 #![no_std]
 
 pub use umineko_helpers as helpers;
+pub use umineko_math as math;
 pub use umineko_url as url;
 
 #[cfg(feature = "hash")]

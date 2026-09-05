@@ -18,3 +18,5 @@ pub use umineko_hash_crc as crc;
 pub use umineko_hash_siphash as siphash;
 #[cfg(feature = "sm3")]
 pub use umineko_hash_sm3 as sm3;
+#[cfg(feature = "hmac")]
+pub use umineko_hash_hmac as hmac;

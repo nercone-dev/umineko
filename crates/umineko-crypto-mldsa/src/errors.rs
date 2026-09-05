@@ -13,9 +13,26 @@ pub enum MLDSAError {
         Provider(ProviderError),
 }
 
+impl MLDSAError {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Variant => "unknown variant",
+            Self::Key => "invalid key",
+            Self::Encoding => "invalid encoding",
+            Self::Length => "invalid length",
+            Self::Verification => "verification failed",
+            Self::Seed => "invalid seed",
+            Self::Provider(_) => "provider error",
+        }
+    }
+}
+
 impl fmt::Display for MLDSAError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        todo!()
+        match self {
+            Self::Provider(error) => write!(f, "provider error: {error}"),
+            other => f.write_str(other.as_str()),
+        }
     }
 }
 

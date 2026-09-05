@@ -16,9 +16,10 @@ umineko-hash-ripemd = { workspace = true, default-features = true, optional = tr
 umineko-hash-crc = { workspace = true, default-features = true, optional = true }
 umineko-hash-siphash = { workspace = true, default-features = true, optional = true }
 umineko-hash-sm3 = { workspace = true, default-features = true, optional = true }
+umineko-hash-hmac = { workspace = true, default-features = true, optional = true }
 
 [features]
-default = ["md", "sha", "xxhash", "blake", "ripemd", "crc", "siphash", "sm3"]
+default = ["md", "sha", "xxhash", "blake", "ripemd", "crc", "siphash", "sm3", "hmac"]
 md = ["dep:umineko-hash-md"]
 sha = ["dep:umineko-hash-sha"]
 xxhash = ["dep:umineko-hash-xxhash"]
@@ -27,3 +28,4 @@ ripemd = ["dep:umineko-hash-ripemd"]
 crc = ["dep:umineko-hash-crc"]
 siphash = ["dep:umineko-hash-siphash"]
 sm3 = ["dep:umineko-hash-sm3"]
+hmac = ["dep:umineko-hash-hmac"]

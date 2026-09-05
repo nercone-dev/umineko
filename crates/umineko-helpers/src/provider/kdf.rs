@@ -5,6 +5,7 @@ use crate::provider::registry::ProviderRegistry;
 pub struct KDFProviderRequest {
     pub algorithm: &'static str,
     pub prf: Option<&'static str>,
+    pub digest: Option<&'static str>,
     pub iterations: u32,
     pub cost: u32,
     pub block: u32,
@@ -15,11 +16,16 @@ pub struct KDFProviderRequest {
 
 impl KDFProviderRequest {
     pub fn new(algorithm: &'static str) -> Self {
-        Self { algorithm, prf: None, iterations: 0, cost: 0, block: 0, parallelism: 0, memory: 0, version: 0 }
+        Self { algorithm, prf: None, digest: None, iterations: 0, cost: 0, block: 0, parallelism: 0, memory: 0, version: 0 }
     }
 
     pub fn with_prf(self, prf: &'static str) -> Self {
         Self { prf: Some(prf), ..self }
+    }
+
+    /// Names the hash the pseudorandom function is built over, where it has one.
+    pub fn with_digest(self, digest: &'static str) -> Self {
+        Self { digest: Some(digest), ..self }
     }
 
     pub fn with_iterations(self, iterations: u32) -> Self {

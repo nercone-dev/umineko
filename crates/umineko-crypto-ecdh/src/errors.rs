@@ -13,9 +13,26 @@ pub enum ECDHError {
         Provider(ProviderError),
 }
 
+impl ECDHError {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Curve => "unknown curve",
+            Self::Key => "invalid key",
+            Self::Encoding => "invalid encoding",
+            Self::Point => "invalid point",
+            Self::SharedSecret => "invalid shared secret",
+            Self::Seed => "invalid seed",
+            Self::Provider(_) => "provider error",
+        }
+    }
+}
+
 impl fmt::Display for ECDHError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        todo!()
+        match self {
+            Self::Provider(error) => write!(f, "provider error: {error}"),
+            other => f.write_str(other.as_str()),
+        }
     }
 }
 

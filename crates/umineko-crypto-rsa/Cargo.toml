@@ -9,3 +9,5 @@ license.workspace = true
 
 [dependencies]
 umineko-helpers = { workspace = true }
+umineko-hash-sha = { workspace = true, default-features = true }
+umineko-math = { workspace = true, default-features = true }

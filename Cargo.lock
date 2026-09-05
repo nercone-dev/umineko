@@ -10,6 +10,7 @@ dependencies = [
  "umineko-crypto",
  "umineko-hash",
  "umineko-helpers",
+ "umineko-math",
  "umineko-protocol",
  "umineko-provider",
  "umineko-provider-auto",
@@ -156,6 +157,7 @@ dependencies = [
 name = "umineko-crypto-argon2"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-blake",
  "umineko-helpers",
 ]
 
@@ -185,26 +187,33 @@ name = "umineko-crypto-ecdh"
 version = "0.1.0"
 dependencies = [
  "umineko-helpers",
+ "umineko-math",
 ]
 
 [[package]]
 name = "umineko-crypto-ecdsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
+ "umineko-math",
 ]
 
 [[package]]
 name = "umineko-crypto-eddsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
+ "umineko-math",
 ]
 
 [[package]]
 name = "umineko-crypto-hkdf"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-hmac",
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -212,6 +221,7 @@ dependencies = [
 name = "umineko-crypto-hqc"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -227,6 +237,7 @@ dependencies = [
 name = "umineko-crypto-mldsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -234,6 +245,7 @@ dependencies = [
 name = "umineko-crypto-mlkem"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -241,6 +253,8 @@ dependencies = [
 name = "umineko-crypto-pbkdf2"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-hmac",
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -255,13 +269,17 @@ dependencies = [
 name = "umineko-crypto-rsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
+ "umineko-math",
 ]
 
 [[package]]
 name = "umineko-crypto-scrypt"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-hmac",
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -269,6 +287,7 @@ dependencies = [
 name = "umineko-crypto-slhdsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -285,6 +304,7 @@ version = "0.1.0"
 dependencies = [
  "umineko-hash-blake",
  "umineko-hash-crc",
+ "umineko-hash-hmac",
  "umineko-hash-md",
  "umineko-hash-ripemd",
  "umineko-hash-sha",
@@ -304,6 +324,17 @@ dependencies = [
 name = "umineko-hash-crc"
 version = "0.1.0"
 dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-hash-hmac"
+version = "0.1.0"
+dependencies = [
+ "umineko-hash-md",
+ "umineko-hash-ripemd",
+ "umineko-hash-sha",
+ "umineko-hash-sm3",
  "umineko-helpers",
 ]
 
@@ -351,6 +382,10 @@ dependencies = [
 
 [[package]]
 name = "umineko-helpers"
+version = "0.1.0"
+
+[[package]]
+name = "umineko-math"
 version = "0.1.0"
 
 [[package]]

@@ -5,7 +5,11 @@
 extern crate alloc;
 
 pub mod errors;
+pub mod field;
+pub mod code;
 pub mod hqc;
 
 pub use errors::{HQCError};
-pub use hqc::{HQC, HQCPrivateKey, HQCPublicKey, HQCCiphertext, HQCSharedSecret};
+pub use field::{GF256};
+pub use code::{ReedMuller, ReedSolomon};
+pub use hqc::{HQC, HQCStream, HQCPrivateKey, HQCPublicKey, HQCCiphertext, HQCSharedSecret};

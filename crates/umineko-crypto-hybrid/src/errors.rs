@@ -11,9 +11,24 @@ pub enum HybridKEXError {
     MLKEM(MLKEMError),
 }
 
+impl HybridKEXError {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Variant => "unknown variant",
+            Self::Length => "invalid length",
+            Self::ECDH(_) => "curve error",
+            Self::MLKEM(_) => "lattice error",
+        }
+    }
+}
+
 impl fmt::Display for HybridKEXError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        todo!()
+        match self {
+            Self::ECDH(error) => write!(f, "curve error: {error}"),
+            Self::MLKEM(error) => write!(f, "lattice error: {error}"),
+            other => f.write_str(other.as_str()),
+        }
     }
 }
 
