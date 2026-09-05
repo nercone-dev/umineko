@@ -42,6 +42,8 @@ version = "0.1.0"
 name = "umineko-codec-brotli"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-huffman",
+ "umineko-codec-lz77",
  "umineko-helpers",
 ]
 
@@ -113,6 +115,9 @@ dependencies = [
 name = "umineko-codec-zstandard"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-huffman",
+ "umineko-codec-lz77",
+ "umineko-hash-xxhash",
  "umineko-helpers",
 ]
 

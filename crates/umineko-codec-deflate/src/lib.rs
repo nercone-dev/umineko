@@ -8,4 +8,4 @@ pub mod errors;
 pub mod deflate;
 
 pub use errors::{DeflateError};
-pub use deflate::{Deflate, DeflateEncoder, DeflateDecoder};
+pub use deflate::{Deflate, DeflateBlock, DeflateCodes, DeflateDecoder, DeflateEncoder, DeflateReader, DeflateRun, DeflateToken, DeflateWriter};

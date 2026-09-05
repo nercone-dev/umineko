@@ -8,4 +8,4 @@ pub mod errors;
 pub mod lzss;
 
 pub use errors::{LZSSError};
-pub use lzss::{LZSS, LZSSEncoder, LZSSDecoder};
+pub use lzss::{LZSS, LZSSDecoder, LZSSEncoder, LZSSMatcher};

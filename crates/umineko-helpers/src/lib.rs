@@ -36,4 +36,4 @@ pub mod provider {
 pub use bytes::Bytes;
 
 #[cfg(feature = "buffer")]
-pub use buffer::Buffer;
+pub use buffer::{Buffer, BufferError};

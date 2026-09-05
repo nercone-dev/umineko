@@ -8,4 +8,10 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+umineko-codec-huffman = { workspace = true, default-features = true }
+umineko-codec-lz77 = { workspace = true, default-features = true }
+umineko-hash-xxhash = { workspace = true, features = ["xxh64"] }
 umineko-helpers = { workspace = true }
+
+[dev-dependencies]
+umineko-codec-lz77 = { workspace = true, default-features = true }

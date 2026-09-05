@@ -1,6 +1,5 @@
 use alloc::{sync::Arc, vec::Vec};
 use core::cell::UnsafeCell;
-use core::cmp::Reverse;
 use core::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use crate::provider::base::{Provider, ProviderError, ProviderFallback, ProviderHandle, ProviderOrder, ProviderPolicy};
 use crate::provider::backend::{ProviderBackend, ProviderOpening};
@@ -145,9 +144,15 @@ impl<P: ?Sized + Provider> ProviderRegistry<P> {
         if entries.iter().any(|existing| existing.name == entry.name) {
             return Err(ProviderError::Argument);
         }
-        entries.push(entry);
+        Self::place(entries, entry);
         self.count.store(entries.len(), Ordering::Relaxed);
         Ok(())
+    }
+
+    /// Puts one entry where the highest priority comes first and equal priorities keep their order.
+    pub fn place(entries: &mut Vec<ProviderEntry<P>>, entry: ProviderEntry<P>) {
+        let position = entries.iter().position(|existing| existing.priority < entry.priority);
+        entries.insert(position.unwrap_or(entries.len()), entry);
     }
 
     pub fn unregister(&self, name: &str) -> bool {
@@ -208,9 +213,11 @@ impl<P: ?Sized + Provider> ProviderRegistry<P> {
     pub fn set_priority(&self, name: &str, priority: i32) -> bool {
         let _lock = self.lock();
         let entries = unsafe { &mut *self.entries.get() };
-        match entries.iter_mut().find(|entry| entry.name == name) {
-            Some(entry) => {
+        match entries.iter().position(|entry| entry.name == name) {
+            Some(position) => {
+                let mut entry = entries.remove(position);
                 entry.priority = priority;
+                Self::place(entries, entry);
                 true
             }
             None => false,
@@ -235,25 +242,24 @@ impl<P: ?Sized + Provider> ProviderRegistry<P> {
         if self.count.load(Ordering::Relaxed) == 0 && !self.explicit.load(Ordering::Relaxed) {
             return ProviderSelection::new(Vec::new(), true, ProviderPolicy::DEFAULT.fallback);
         }
-        let (mut candidates, builtin, fallback) = {
+        let (candidates, builtin, fallback) = {
             let _lock = self.lock();
             let entries = unsafe { &*self.entries.get() };
             let policy = unsafe { &*self.policy.get() };
+            let mut ordered = Vec::new();
             match &policy.order {
                 ProviderOrder::Priority => {
-                    let mut ordered: Vec<(i32, Arc<P>)> = entries.iter().filter(|entry| entry.enabled).map(|entry| (entry.priority, entry.provider.clone())).collect();
-                    ordered.sort_by_key(|(priority, _)| Reverse(*priority));
-                    (ordered.into_iter().map(|(_, provider)| provider).collect(), true, policy.fallback)
+                    ordered.extend(entries.iter().filter(|entry| entry.enabled && supports(&entry.provider)).map(|entry| entry.provider.clone()));
+                    (ordered, true, policy.fallback)
                 }
                 ProviderOrder::Explicit(names) => {
-                    let mut ordered = Vec::new();
                     let mut builtin = false;
                     for name in names {
                         if name == ProviderPolicy::BUILTIN {
                             builtin = true;
                             break;
                         }
-                        if let Some(entry) = entries.iter().find(|entry| entry.enabled && entry.name == name) {
+                        if let Some(entry) = entries.iter().find(|entry| entry.enabled && entry.name == name && supports(&entry.provider)) {
                             ordered.push(entry.provider.clone());
                         }
                     }
@@ -261,7 +267,6 @@ impl<P: ?Sized + Provider> ProviderRegistry<P> {
                 }
             }
         };
-        candidates.retain(|provider| supports(provider));
         ProviderSelection::new(candidates, builtin, fallback)
     }
 }

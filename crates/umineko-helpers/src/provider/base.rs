@@ -195,11 +195,17 @@ impl ProviderPolicy {
     }
 
     pub fn only(name: &str) -> Self {
-        Self { order: ProviderOrder::Explicit([String::from(name)].to_vec()), fallback: ProviderFallback::Never }
+        Self::explicit(&[name]).with_fallback(ProviderFallback::Never)
     }
 
     pub fn explicit(names: &[&str]) -> Self {
-        Self { order: ProviderOrder::Explicit(names.iter().map(|name| String::from(*name)).collect()), fallback: ProviderFallback::Declined }
+        let mut order = Vec::with_capacity(names.len());
+        order.extend(names.iter().map(|name| String::from(*name)));
+        Self { order: ProviderOrder::Explicit(order), fallback: ProviderFallback::Declined }
+    }
+
+    pub fn with_fallback(self, fallback: ProviderFallback) -> Self {
+        Self { fallback, ..self }
     }
 }
 

@@ -8,4 +8,4 @@ pub mod errors;
 pub mod zstandard;
 
 pub use errors::{ZstandardError};
-pub use zstandard::{Zstandard, ZstandardEncoder, ZstandardDecoder};
+pub use zstandard::{Zstandard, ZstandardBits, ZstandardBlock, ZstandardCell, ZstandardDecoder, ZstandardEncoder, ZstandardForward, ZstandardFrame, ZstandardHuffman, ZstandardSequence, ZstandardStates, ZstandardTable, ZstandardWriter};

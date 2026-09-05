@@ -12,9 +12,9 @@ pub mod crc32c;
 pub mod adler32;
 
 #[cfg(feature = "crc16")]
-pub use crc16::{CRC16, CRC16Parameters};
+pub use crc16::{CRC16, CRC16Parameters, CRC16Table};
 #[cfg(feature = "crc32")]
-pub use crc32::{CRC32, CRC32Parameters};
+pub use crc32::{CRC32, CRC32Parameters, CRC32Table};
 #[cfg(feature = "crc32c")]
 pub use crc32c::{CRC32C};
 #[cfg(feature = "adler32")]

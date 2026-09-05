@@ -1,0 +1,379 @@
+use umineko_hash_blake::{BLAKE2B, BLAKE2S, BLAKE3};
+
+fn data(length: usize) -> Vec<u8> {
+    (0..length).map(|index| (index * 7 + 11) as u8).collect()
+}
+
+fn hex(digest: &[u8]) -> String {
+    digest.iter().map(|byte| format!("{byte:02x}")).collect()
+}
+
+const LENGTHS: [usize; 18] = [0, 1, 63, 64, 65, 127, 128, 129, 255, 256, 1023, 1024, 1025, 2048, 3000, 4096, 8192, 10000];
+
+const BLAKE2S_VECTORS: [&str; 18] = [
+    "69217a3079908094e11121d042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9",
+    "b480c25c1e06eea9e9c3e36754715cf0958e4d14b22a8c2a7bc34ebf75208602",
+    "9b3be5344b255a7faed41eb2093aa10f62ba6168d8ad848fcc88e2a376708561",
+    "3a588690acdc77ad0dba26e77d650a7299c52cc08c4f73aee671168fc2e65a57",
+    "068755ee1119ab011243989482ec4e43fd9e876589c579d6266d606afe5fd785",
+    "80e0f09406f9cd33bbe42c62eab741682703b33ce51964ab0195299fd60e693f",
+    "97f69df7ec4c5dd4c439bb23fef627538f56fab6bac81d7346fd903571658d12",
+    "5d81350814cb4c05fa5e002a7e367b20a6debbc6924748065ff216797a863e73",
+    "c1c436f886e41c0aee766592596912e58103f6d19a6afabd47f1b3ef41e12506",
+    "a3d9c837eb12dc6ec0f9ca13774d83a0e0c0de0373d80d10c6450ffc5e12ca33",
+    "79a94ded8c4d3b425a11f52f0f8d381072058927ddcabbd23f3fb268ac96edeb",
+    "d735df91d8e5e5e40ab5674614b3e42cfb557f92be79b639742b5e4609561cb3",
+    "ef92f3548acc56f3e14244869c9be647c022461740cebf2cf8a678c0e344559c",
+    "0b25dd38b8f0427fc7ad7aed4ebc4fc0bec5b13f0d4633295704a66f03baad15",
+    "41bbac7577fc383166533f125569df404080b9ed96c4c64ee0741732c40e83f2",
+    "35d17d965c63db61f3511ab4620015e7e6fe19e64d6d30a3eddc20a0d3779719",
+    "be101e87e5b798c772e11664b793bfeefd86397906c8c79756c291a90c5ff624",
+    "8b898192e8a27bbe851aa2e01d4e6b0a0106c1c7df87067bb87063027f26c4d9",
+];
+
+const BLAKE2B_VECTORS: [&str; 18] = [
+    "786a02f742015903c6c6fd852552d272912f4740e15847618a86e217f71f5419d25e1031afee585313896444934eb04b903a685b1448b755d56f701afe9be2ce",
+    "c3fd8f085f18d380c9cafff7213ef009ca6d8b21f87dfbef9d99368be8f58e5e794f20b409cd8f74e573bdbb40f54ca07c5dc498f7de99ddffae43cf033eeebd",
+    "74bcdb2f1cf6df9486f21ce01e57472ec8e4aaa92553bb1fdae068220cd40c6e0a156f6fa699fc7d1f1d0bb85c630d9c0a1e249e651895e638b4bb90574b12ff",
+    "d2b8094acbbbb901f7783698f62498b722a281994b54ddd24970644e84287defd1fc4c73cc3036da1ab63847faca5648cb2ad9c11ab0ad49375cf3b76e3f4373",
+    "f28a357e147d3cf4e23f535e0e34bc9b8d35e7fc43b231023b7a09a822cb596239c8c23d33d68991cefab97d7c8a58c12b9d9a19336bfd56326cc165a7b05d14",
+    "02475e923460186717b477d8924e247468cbd6a9e8a6477fa36cf2ef51097e0bb43bbbe022b2063bd04d4d94c4a1113382cc90c29278c504004d7c563e5a2656",
+    "e1aa6ae49ef23641f916a0b4ddac18e5bdd31c25fe8c143fafa0572189e5f569ea32f62466f9bee41bfd1fd42b3027c109ab529b63c23ac791d3101facb9c5a0",
+    "5d5b550612fed46ef7b0a34bad88ecd64679e1fd64305e07876a46f5ee90455e1f6f6bdc6f1f8bba6941789d57f9f1d9e66e40bc091b3bd777aa7603df55cfd8",
+    "efd62249f85b444dbe97cc7adc536fdad6ad1babb7617fbde2fdfe83be5f82decb03e12efa33ec724bed05ea65ac82d136dd51cad232f9944637de70097e3aa7",
+    "1b69db68eed647d6526f01ca0813c9eccb59837d5fa2f93789cd77696c3a09f19d6de070cdf5003601aba84c531eb5ddad6f90a1974e69905b935b66dc9ff636",
+    "a59c65d0888bd0ef7d5e8caef200de61a898da9a2fbe2cd608a0846d9aadb9a44c1f58e9fa08c035d115c6b70133e4a5766a5ed9d3690e41fa0f3a9c73116999",
+    "55722449f54bc50463b601be69b286a1514bcf3e8797776912fb212e82e5dfbcf8d9880d5ec9ed7112ac9feae01166fea794c1de00c98135ec9ecd962a529947",
+    "a795ff9f9e80af83c8ac161d77de5a721c0b21638e105177a181197e0b1a2d68e77962555a0d766278866d24aef0e96c7529ac1646fa3b2f4617ff3937686d07",
+    "160374fe142396dfb9472e41bfc4535d4bc9e98b6516ab66fee314c31d7a777e06753eb89b6510abd93764325f10e295312b206c5fa791b0d3b2a2f780be8a02",
+    "5abd1af6a30947e975e253e9a124cd3649cd127b8d39042a31f777801ac45f67a989cd53e66713ab3cd15c8b907dcd313583071527e5b484c8f012cb4143a307",
+    "aa29d85956bbe9ed2f12e79971683ed0d1c9af4234b0f4a83162f4a4e02bf4dbc3a73b3e5ac39a334ae5c3fba9fd1b5ecbc3946db0d4223fee4ecdeaaa303898",
+    "3195b20f3942995ded1b84e58f9e2927dc82d0b42cbf278bff7eed15ca868e8025cd36d01186ba7913d8e890d350be5dae65f3cf7f00aa5cb6284c5606392ca9",
+    "18c1002a286c65e723c3c0714ca97b0f647228e6d436dcab6946917bc771cde0da01c744cc8d522f2ec0435f6a643443379d1e65056ae3da52678e9738369b16",
+];
+
+const BLAKE2S_KEYED: [&str; 18] = [
+    "48a8997da407876b3d79c0d92325ad3b89cbb754d86ab71aee047ad345fd2c49",
+    "e2c4077ce2da96db75a2f8478711a01b2a6ba71d654193eba5b6d3b9a9101aea",
+    "58bf6384f162939a8456a68505e77251aee57061838381465cf2ccc61a585d1a",
+    "d7e531c366fe18d5ec30c129625c2496a7b6a9be1a37bba7a8503ffa3704e76f",
+    "df1429c079e6e24b25938d82cef987a1a75ea153342733b6dd7d70768b863048",
+    "aaddbc9c86b281f682b97bebd7db9de7d5f5a0dde08c63a3e931c7fa4331eb60",
+    "1d947bd266b05dde5ca761c8494be6e1496e285d15ed2dd76e1cdbe3cf5cb6ba",
+    "436e4c99a5a043aff4d9336caaa071e3c188ae3128bd34d598eacc51f89bbe39",
+    "7ed303119ca3fabfad11f7b9a2c8cc3a78cacb60ab2fa94be1bd4b1043d65906",
+    "c1ae76b176d794d047acbcd2fc428862960351b28d2af121220f669a17936762",
+    "641ddab97a37a81dc1c6fb9e2c4c954b86ad13ae60b5401161c6e3a07c7c8589",
+    "30040549cb2bb9220b6da9ad67fb30ae05af73e00f1ac74c20662580959eaf72",
+    "9d137d92c33a20b4e29e97b2489903f4592a49e1a76a79c0db7b617f597dd85c",
+    "dff845278c94027d1596ad353deb0c2c9ffc66792771adf4e0385279fcfec2d8",
+    "246561fa450b5aa703fab81ea6e16edc8bb8ddab544024becbf2287889df3e95",
+    "0a49b5742b8fcad9dc9bead040d84f00e210cffadfc04b64b9a1be2783d59383",
+    "0dd4b50545a381de7ad260508bd48c41b13e4d0f6ea03cee31ec14fda7f32c6c",
+    "362ec78e46eac65e4c46c9eaee83c9c2ba9e48d49a4b1e0dd79ee949cda2411b",
+];
+
+const BLAKE2B_KEYED: [&str; 18] = [
+    "10ebb67700b1868efb4417987acf4690ae9d972fb7a590c2f02871799aaa4786b5e996e8f0f4eb981fc214b005f42d2ff4233499391653df7aefcbc13fc51568",
+    "0f3fa141b47b544f63e1a7eaf5648358c827cc6bcaf6a41426f6da3f03594ff17599d0d0a5278c3d6be583511dc92d4133b940efb97a191cabd8f67b4ccc4332",
+    "7d33579336d6242203bbb05928aa41f9f70aacf059102308c46caf3a414d184d1c9e4ca528c4b75c2a58deaa4d4b17041980042d5b607be818df70255b41e4e1",
+    "90ba652318b775695b671d7bdb5763a06ab05d5010f86bcfbb305bc26268966596d1cdc9776e30cb5c79c7225c515ddfa11f0dace97de6d05e6591c9b49f44d2",
+    "ed8fe371b81330151bde0c58aa0372fe5a27538c430fff7cf265aa0528f4c6534f8c9714485075f3405d0265f6180cc52f2e54ea3e1b12cb45a25c1416cbca22",
+    "19f5c63180f244cf18f0fc2fd7519a6605d813a6e54103998670e4cfe6af55b098a6e8c540aa51c256ec601c0088ee10e7c0e419805607f916a9a0221c894bac",
+    "ebe826cc2ad2a6b23c5447a5a1be825ef640f780920e43067af98151a442eecb8478e428bda4b60288f81d3665af8d117fffd37b018e9b98a3e9f702fd3703b8",
+    "972caeda8263595d5faa708a4aac5114b3bfc895814a2937247cd9abda8e754edd2b6fdc50d171fd752b494ff7a3c558737a0d035f9d63e935d7d9e779f85de6",
+    "df46ea041ee7842b9674bf110535fd95720bdc3b01f3185f6f47fc9eab9546f20c63141cc4734193a26140742283cc22185b9dc827d1cd08bd5c66352320ef61",
+    "4c84535a5452d28517e49b79661f466f8f38d5486de5886c4211b86247383af2bdfa08f89fc7657d65065e55764e456dccec61e402d30a4534e60ccdfbb4a9be",
+    "87389c82ebe0212d002a813200c61533aec3f880d9aa44d142e657c452a5b32ee7b3221b3a308d99bee33a0334d9c546f7aafdb5b2ebb41f4414039016b09710",
+    "b0696094742c6e2f408a35af45b47c3bbeca234cbf3a2c56a30b7fff7f439b403609d4ef3a009749d757a357f3b19fbb17a9fc408bc75f6779d4eb3950979b26",
+    "323a8626ee9003607f8db9d7c39f1f72cce50ed22919809b30d09992e87770de7ebd5b204a7a6920e83ab9cd42d20a6abdee6551190c313546a9bf05841e146a",
+    "3d6c5a9b9a1b750c9e01cc6d8aef4dadef34bc705fe84ab1472dd75975c2f899e59bdcbf1703d5b4eac0e2ab5b1e656adf4f121be38b20ba2eab40ee529fa280",
+    "5f60b81a59555286555657cd9cf894010880ecf03da1d421b59574e5311849b065808b6ea57c96e5bf8c3b02437a6586bbe9e863e9b7315785ac10ec658373a9",
+    "19f2b122ef9df3d98107527bc3c0619c7643dccc98fb034e2f95d083af02e41ad53238205ea2cf45ae5843a51c068baa4f82b394903caafe3a6130a322baa2b1",
+    "03d0e6a1247083d850a125e4a99f32a7e904fc12a238752f3d08b85d1f37eebf4202579edcd682ee378a505b860b2693bbb6e06cb7e3fe7bc2ded24e5b877673",
+    "ec3bc3c2f6e8395987fc3a43b10690c8f2113fd81c1e3d0108615b96b17fcb6ce46903cb44daad692ac49b0e95db6d64966f9532ac02f40c7956579515862635",
+];
+
+const BLAKE2S_SHORT: [&str; 18] = [
+    "354c9c33f735962418bdacb9479873429c34916f",
+    "5a98eac1af4bb00a1fefe00014b0b82535c08a6c",
+    "70c2a37aa6743129a206e59805811726a74ce17d",
+    "453c268e60838748ece20a9193e2473129109026",
+    "bc864e62a1b8e6677e7c7138883d37cdf47c8cbc",
+    "a23fe9717065c76d6af7da4d530d8da3d88db7df",
+    "52c711adb978df1c938c1f96dcb9452636e3d606",
+    "5d36f471170805b68a2c9d682d0861195d100827",
+    "4833db771b58933c5c1e26659192d35f35862e6b",
+    "c6c21915afe5915ac053da72acee1b9b983c99b2",
+    "48c466e70232a1cb5b796b602663c8a5a0923730",
+    "e3a96041687f8ed8f4be26225a14e48c58333aaf",
+    "eb31f8495adc586287a7f2d98eaac320984c8fc1",
+    "02938af12b19bcd01819a7837898e43192fd4785",
+    "de83d8ecdfc04effb3bad91361a313d736a1b3de",
+    "65f7f5c0fc06db774015fc8a6cbdd0eb2713bb25",
+    "3e8a749e1bd1c5a3578bfc141781d2ed1630ed3d",
+    "465df84222e6028443a6feca70512cbc3fa8dbd8",
+];
+
+const BLAKE2B_SHORT: [&str; 18] = [
+    "b32811423377f52d7862286ee1a72ee540524380fda1724a6f25d7978c6fd3244a6caf0498812673c5e05ef583825100",
+    "b7fdc42de4ac9753769314cfa1ba96b9b18e828c6cfe9d6ea33c08b78cd189690e33eeb6f686930a4a4c5793f6bc563e",
+    "cf3251875112d614dad8fc6d7005475c856cd4e67d4604f5dfc216311eb312e156235f456e6a4e7a4cf072155353bfe2",
+    "357ea3c3c51431344244d38b9047181408cdb1c79c39cdcc2632dfe7d1fda33cfa3692de79bf76848ac02dc7dbdabeef",
+    "28c442da9c92b58291039b32d4c6880c2f46a73d69db087324a4ed4758fafec6a12420fe4ed433b2299eee18d6ac66a2",
+    "e69cc33bc7d7e652a1c27a89ea8dae46f2b9eff772b48e50ba8b10ccdd2baebc44dcc812774f7ab885661d4c7dc3e194",
+    "602b4c9865a348d824027faed223b0bf8d75034f020b83cd2700d44f5d47bf0e6bce597bd11e26d1570809c98d8f97dd",
+    "5964978326e7296bf462905f3a81f5f50e115338716224e02dd26e68ecd403accecc7203146ad5a3367051bec6508278",
+    "f9c0f6a073f53c2c30bae58526c3eff4ae6a60cf63f106d9b70b5047cbc99629079b57172dd0cdc084ae01aa47fc95cb",
+    "283a030aa99f6d93b0d8739dc81b37cc4169dee7d1f16ab2222e26f732dcc90f349ac7c714b0e5ae30755815bd1f4047",
+    "f72cf2b3544409a974d15c3c1796fc668ebb4e7802b4082c768df9b06c7ed1ba6216a5318729e829a4a20a14d609f984",
+    "d7f3348f9f47034ed5fc4bacb56983df37c80042fc4ab2714f761c029a87f3b8a14abe873e3ec2fc74c14124d53cf4c6",
+    "1a4b6910ce3543835a64b9e5a3c47a110b4d06b9b848a7e8a2c9fe3db587485b70ae170843dab34d606ee0a80a6a718e",
+    "7e879b231601c612d90ba76bad4bc43d2aa907c8ecbfae8bd721db698006db84679444df4ae947edd5f6f15f162b9cda",
+    "b2c37c4d0a0812336c650f03e86173d75d76d83efc3e7ea38cc67518017fe71d85afeef6c97bc383e8ef088827e7f0da",
+    "4620d812004f002c732b1fa01cdfd62fe36f99eea51bda02649d2146752db4d8073fe427f9e6a2372b665b4336caefa6",
+    "7872be8bde7a3200d3f5e404ebdc991cd44452912762d1dc241d84ee78602294921ee5c7c63950853645d619b8c9ce4b",
+    "4a03449b6b06149b2e8e763439785ba16e2d5096e2ba1bf38ff80fdf9138e70064e5c56ea062953a3501181ec40c1f3b",
+];
+
+const BLAKE3_VECTORS: [&str; 18] = [
+    "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
+    "caebfd3859f5380eff54715148444178be18edefa3d1ceae275982f1a2824a91",
+    "a68845644b95d76470220497ff5f56375470e1a97f3b45c16917d65969489a83",
+    "7b9d6f37ace65c5d54426ae97fb07d6636d83b5631d8dcd2a928033abe343422",
+    "1aa58c0b7b1381a71fa15ac3b0f5abba6afad0d316b327b3bcd0f67a05290726",
+    "9f9d34bda0cd8cd0b7f1ead172e4c690299b11e5895108fc3e3d1048895adfe8",
+    "e40d5db220a074a32e55bcc457b8f92e2c864ce789c4bf00048c5de8166cd383",
+    "b1f7c867c4f02cf93417ff79c8e68885d4993b8d893991f20bbdd42d6c0634d4",
+    "c6d228d556728ee436e366fb4ca61576e638b71bc82e15ba90e159093fcf15ff",
+    "4db32446968753a3c957700b221d93abc2e40c3e41abe4b808aa575b5c257cae",
+    "6e10aeae5916ba7f02828b86c83c2868b7fb81711226a4a21412669425b6c4f1",
+    "3c58a877133ddefbccddfed1c3b44c0f9a9afe48d57ef1d7a86694eb328da840",
+    "3e92708addefb89bdf8569b31159f3b0f28c2ba978c8c5b99327e2d243718376",
+    "0d4a1a09801bc667e0352a86b433e88932f707bbbf51122359b027fbc8ab690d",
+    "e3b5fe884f96e29dde84417963d7b6c1913bcecf74c5491b0a504a4597976d82",
+    "338bcecb9b940be26137655b745e60217e27b4e27a68a24f7570bef03d26e848",
+    "e704cf63db92c1ea90ac80ba772d2e0ef1c033442a0111d32abef81bd900294b",
+    "fa8883a198c86fc9ba50294dee5e5c6fc7350979018e535c241f9660506914ec",
+];
+
+const BLAKE3_KEYED: [&str; 18] = [
+    "73492b19995d71cdb1e9d74decc09809eb732f1b00bc95c27cb15f9dd4d6478f",
+    "c0e6cf925e08ca7e93085ac215d12e1e554e80a64f26d710e3fd971d77e74f87",
+    "b6420e1205540eb5434ae93d322c9c6c8276e4e3389904a2dbc712105b21ea43",
+    "8bb7eee695b87c9582ab5e1b339ec82b186ae70e30405b18dc4afa708d721f29",
+    "39666bc4dacffd8507d394d445785b79c4aa26605ec021e6e520210aea28b763",
+    "339c12336aa711c06de515722b9cb27cc3f4100a6381c0da5c16781314449ef0",
+    "7ac9deb0556fb0229b0548ba70eb689ee167ab005b60b232711f96bf8ad94e4e",
+    "9a5713aea89b0cc4085ce101d31a1641adb59199a83b270a56394964de70afc4",
+    "d345946880daf13b763a5856b1374beda5131b85d40a950930f26829690d44fa",
+    "aa602f5df331ab3589253c5a439fdb37e26b3ccd4ebfa31ec3669a5d0a9d8fb8",
+    "10acf39a099f3fbb6d359bddf36cd42c68bdb91974ed6a20daec16e52a6845de",
+    "c5996f7598fb8546cff3cd8f7bfe92e3960ec6077f52af1d091bc5e5c88c4e26",
+    "2882b16979964452aebf97c8aabd7970e1a2894253d3a1918eae090af16ba546",
+    "c9349a23c760915ecb9d85020f9d01947e8d457e36b793d8c28d64adb40dbe37",
+    "cda35d01b965f71d3b489a6b92e085ea001ff83b744e74063e7d2cf40f53d4fd",
+    "02655e8ecba0c0350af8a3284ff1ccb4067042bd6380762a961f91b7aba3a59a",
+    "cd3d64a8d66dce6778a5273eb1eb1896be01bab7158cb69e328b7d891a14e0c3",
+    "7510f9db18aee1a16fbfd91b38d7f4fd7c5cbe46f72be14a13b579bf8498d387",
+];
+
+const BLAKE3_DERIVED: [&str; 18] = [
+    "075caf881eef4e8600c77b9028ffbeccb5b98e4b73c4b5f06781495ec834c3b8",
+    "6522cb2973a3b6f0618efae22c201806768ef07b309ed9c9039719529daeea3e",
+    "5d39eda0b89cf452614a1b4ea45e0aeb4c891d1f1b6a9064b754223711de622a",
+    "efbc7075e7af135338a6efca25492c23922bad2ac2a91f509eb7c99df46bcf48",
+    "f42b3b73213124c670f5acb64b55a5c883e59a3d7a573e5c50c508a206b6eeba",
+    "0d3e418a65f8c4c468d3a26a17db6329a6e70cb30d615b29477b6d23493db76b",
+    "8f09db7fbf0051fff979f7cd75f76469ac0e9dfd4d89990aad0fe0b7578cca02",
+    "f6516e8109f3bfca288241454d01b8b95cdd869365b3995188af3aedc7b24f9c",
+    "cfedb92aeca7f2b1d4c60ed5f090bffec98fdd536164ee7e527ce11c5ae79eb4",
+    "0ef3e87deef29ae3bb08122028da74ed2d344ab0759c0bb660387e19101b6457",
+    "3e6313f9766db4375b54fe49b1fbdc288f4ec4669dcdc7acf3ffcfa5fcbc9f39",
+    "05a597c1cc3ba8d590fbb2f70db8ef47edc7a166bec7f12362c40668cc48964a",
+    "5f39eec7f301ff74d0ac1f478dd347b45578ff447767677d27953dd377dd5572",
+    "3753b7dc2c9490d3d6fae4c21faab9fad4dcf2b0527f697af2b075a6a1c4998c",
+    "91c938bb3d09ac7bea535a307ad1bfd68e5adde65116d94273144e4d40597826",
+    "6f103ee5fa6e05395b54cce6f980af16f0a555e2b53ae913d6db8579a891750b",
+    "d89e9ef95455d8225fe650ff0921acc14e186f61be332e2f06e23eda1ab42a20",
+    "fdbe54d4c315593ce71dcc32622e98e0df8f30a3ee1cbb3b889b60b97a3a8d9b",
+];
+
+const BLAKE3_EXTENDED: [&str; 18] = [
+    "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262e00f03e7b69af26b7faaf09fcd333050338ddfe085b8cc869ca98b206c08243a26f5487789e8f660afe6c99ef9e0c52b92e7393024a80459cf91f476f9ffdbda7001c22e159b402631f277ca96f2defdf1078282314e763699a31c5363165421cce14d",
+    "caebfd3859f5380eff54715148444178be18edefa3d1ceae275982f1a2824a91897ab3cfc7b085ddfe13876e5867fb1d46eb4dc5da66cd20cdb3bcecf18e2f5db83ec8e33ae66ef5f0804ef7804166ce1720c317d1448106a0720102e2d1ad2221b9f189056cc38ff2d077a1ce411bb8d432e11aa9ac31d1181fd71b6b15e0661a820d",
+    "a68845644b95d76470220497ff5f56375470e1a97f3b45c16917d65969489a8316a0269b720aec16adf1983ca05bfb8419b05fbe3e19822a01c12c91f6ce9b1e0669a3fa0dd77308b82c45f1cf9ded5f579a42a904c806e201752e3cd8ca8de41d29334d7143ba3015d0ee4e3958f823112becefa8f63971fd9e56cdcc1ff1768d414d",
+    "7b9d6f37ace65c5d54426ae97fb07d6636d83b5631d8dcd2a928033abe343422dc8642a463bea3702a9c81781cf3a10fcc4cdebaf15bea356f41ec85d27deaa2859fde35b0223c37898011b8d95ffe41c55144e106c2f9112d6d33bb8209d5e173c230a72e8a59b53115853404125e2c3cb2363dec39512456768f54ecb62c297eae29",
+    "1aa58c0b7b1381a71fa15ac3b0f5abba6afad0d316b327b3bcd0f67a05290726fc94fe445a2fcc5c553957e69d0690fe412cf9951b72e223b782de453c0e008d91c8e3277284f6f87e343147d7e2ad77624e8cfcdd509874d08d3de207f1adf058dad8b0bff3505d310d44ee0f6204db30cf44584991608a6107067043a7343b906795",
+    "9f9d34bda0cd8cd0b7f1ead172e4c690299b11e5895108fc3e3d1048895adfe82ebeb3b406134cbdb3e74ffcd1b42535b09e260831e8f8d0e127735f30d3d793d39e358f8611ee1858d9d03606c2b736d4269021a2e1d9829e7203fcc6977ddcbd65095632a9e89c04b89d86ecaee3eff9bf0c7e55465da3d2f294cb6c487a2b790ae5",
+    "e40d5db220a074a32e55bcc457b8f92e2c864ce789c4bf00048c5de8166cd383e8121f46215a4813932fd8b674661dca8606cd8b0be6f86c2ed5b2d074a4afe7857b0b94154feda309d08986195bbf95ca49bd47f09a4a653d793bc01246a0da273d96c700e8273397bef5464e3786413a2ec10ddb3c76db8ed1f7e7c32cc313c9e8fe",
+    "b1f7c867c4f02cf93417ff79c8e68885d4993b8d893991f20bbdd42d6c0634d450b659ee4692418e2832113731ee7f0e9a099333de9aeb9f605de4b68a60731000cc44cae37e38f867a9c8288509655310046dbe80043cb19ead445db726fe696c1541ef3579a6038f2941c0ded21f674068d50c23217852da9934b76ba06a6f4680bf",
+    "c6d228d556728ee436e366fb4ca61576e638b71bc82e15ba90e159093fcf15ff15a18f98cd8a1d88595d172d752a0fc535b35389d9cffb74b4577f6c7cf992c22f1b4d7daf2f345582283aa5a0d76cb0086c51f10407aa92fbcf40020d705df854301c1d6ce077176ad9c10fe7396db56b06da4af715ee66268c05c21ee1f9d36e44b8",
+    "4db32446968753a3c957700b221d93abc2e40c3e41abe4b808aa575b5c257cae0f9944f69620e5bac9eeaffc4fad815376fcf4766b2e13176e1db61dc453b2d28c5a144ea243511bb7c570636cc45be4a53e13cdc3a9c5ecbf3264f050f1951d9b9f1f4f94119f8626e6b2da403077cd35be7204dd97e80753b97af7fd448ccdc21838",
+    "6e10aeae5916ba7f02828b86c83c2868b7fb81711226a4a21412669425b6c4f1fc5cffcb5ef4ac980afa6a518bed0cee78ec255f8bea05b3f1d6cf0273e7015e27f58692144a89b3401e4c3b2c45630465beeea0a7a4ae0cd210aec709a527b0b02049722a48f9fe0dd77ce1f645b5c94e0578bb994b5625def58e4be01e1847966193",
+    "3c58a877133ddefbccddfed1c3b44c0f9a9afe48d57ef1d7a86694eb328da840cca31ea1a57876f3b84ae281d3e46032e08dc127383bef64aee99cbb7779eb5beb0f6852ffeb6db704033bd32f1e5c5dc79a1efe8de148190a0e69d9eb9a4d88ada9f2d7809d9e86c51275e664d34eae3b16f7e7fd7c749c57a777b617b0a46365fd57",
+    "3e92708addefb89bdf8569b31159f3b0f28c2ba978c8c5b99327e2d243718376c338ae658221ea3f293fc92993a0e7f0fb3228970f625ddf0fac89192e48c8ce09c18b14fe2c92a93699636c2daa6a43c33dade4959e8accddf132080f6949e7584ea738b5652191613635e8d3340d7a9f55dccb7fea2fbdf18060852e8892fc987a44",
+    "0d4a1a09801bc667e0352a86b433e88932f707bbbf51122359b027fbc8ab690d053ae30e49db8e38138d85aa2e14d6daefca019bf29f69d765198a92f1fda8c04d639e7b1ed5fa31e815777f6fa01ce937fa779fc90ad9a5cb9e8a5874507d68f43cb1d3bd1ed5ebf0302409cb4d23b3f33d061b791bb045974e0d0c17b1413ebbf4d6",
+    "e3b5fe884f96e29dde84417963d7b6c1913bcecf74c5491b0a504a4597976d82386555b5daa014605b0aa7895991f998a83aa5baae0c38ac06bb180b3bac912c46c5cdc5f65f23043fc1961f7a8ca11ceddb2d095397b21e3653c40323dda39c32efc78328c19aa51520a7adf30ddc527776a6ac670d3c281160b4bf9af94851626449",
+    "338bcecb9b940be26137655b745e60217e27b4e27a68a24f7570bef03d26e8487a7220e05b2245bdc91d4d40de2a127f3a7c8eb4e2ace3f691b18bc7a2f6e6675c7de627679b5ff91607620877bb22e21e3263b23b5aacd0b3d2e057e098cb89bdb9bf495667320f6a741fed3d77b72d4470804b4714b4073f2227a3a0d69e2503d5ca",
+    "e704cf63db92c1ea90ac80ba772d2e0ef1c033442a0111d32abef81bd900294b7895e2e9fd64be6109b5776633ac6ea33c6f9b05ed5088a25c560c697ac474e49ccfd6f53274143a1fd56446521739653eaeb8e0953dc2c519bdbc48ae2baf48079ad7e3cd6bc72f33f9694541641f9d1f9a7ca216077f217094bed0015470645d1df7",
+    "fa8883a198c86fc9ba50294dee5e5c6fc7350979018e535c241f9660506914ecdc231b9a9d76f39d60a2562f8470030bf26989a53323c7021a49f3401d09cf06acfa1c9599882cdcc656c814f5986bf33db2e2f021c1f31dc63f8e26e55d710fc55696d1bdca154ab837c2a19c5dbe2c240c19f8f1a1042cb395f80ad720de38220734",
+];
+
+#[test]
+fn blake2s_matches_the_reference() {
+    for (index, length) in LENGTHS.iter().enumerate() {
+        let data = data(*length);
+        let mut digest = [0; 32];
+        BLAKE2S::digest(&data, &mut digest);
+        assert_eq!(hex(&digest), BLAKE2S_VECTORS[index], "at {length}");
+
+        let mut short = [0; 20];
+        let mut hash = BLAKE2S::new(20);
+        hash.update(&data);
+        hash.finalize(&mut short);
+        assert_eq!(hex(&short), BLAKE2S_SHORT[index], "short at {length}");
+
+        let mut keyed = [0; 32];
+        let mut hash = BLAKE2S::with_key(32, &(0..32).collect::<Vec<u8>>());
+        hash.update(&data);
+        hash.finalize(&mut keyed);
+        assert_eq!(hex(&keyed), BLAKE2S_KEYED[index], "keyed at {length}");
+    }
+}
+
+#[test]
+fn blake2b_matches_the_reference() {
+    for (index, length) in LENGTHS.iter().enumerate() {
+        let data = data(*length);
+        let mut digest = [0; 64];
+        BLAKE2B::digest(&data, &mut digest);
+        assert_eq!(hex(&digest), BLAKE2B_VECTORS[index], "at {length}");
+
+        let mut short = [0; 48];
+        let mut hash = BLAKE2B::new(48);
+        hash.update(&data);
+        hash.finalize(&mut short);
+        assert_eq!(hex(&short), BLAKE2B_SHORT[index], "short at {length}");
+
+        let mut keyed = [0; 64];
+        let mut hash = BLAKE2B::with_key(64, &(0..64).collect::<Vec<u8>>());
+        hash.update(&data);
+        hash.finalize(&mut keyed);
+        assert_eq!(hex(&keyed), BLAKE2B_KEYED[index], "keyed at {length}");
+    }
+}
+
+#[test]
+fn blake3_matches_the_reference() {
+    for (index, length) in LENGTHS.iter().enumerate() {
+        let data = data(*length);
+        let mut digest = [0; 32];
+        BLAKE3::digest(&data, &mut digest);
+        assert_eq!(hex(&digest), BLAKE3_VECTORS[index], "at {length}");
+
+        let mut extended = [0; 131];
+        let mut hash = BLAKE3::new();
+        hash.update(&data);
+        hash.finalize(&mut extended);
+        assert_eq!(hex(&extended), BLAKE3_EXTENDED[index], "extended at {length}");
+    }
+}
+
+#[test]
+fn blake3_carries_a_key_and_a_context() {
+    let key: [u8; 32] = core::array::from_fn(|index| index as u8);
+    for (index, length) in LENGTHS.iter().enumerate() {
+        let data = data(*length);
+        let mut keyed = [0; 32];
+        let mut hash = BLAKE3::with_key(&key);
+        hash.update(&data);
+        hash.finalize(&mut keyed);
+        assert_eq!(hex(&keyed), BLAKE3_KEYED[index], "keyed at {length}");
+
+        let mut derived = [0; 32];
+        let mut hash = BLAKE3::with_context("umineko test context");
+        hash.update(&data);
+        hash.finalize(&mut derived);
+        assert_eq!(hex(&derived), BLAKE3_DERIVED[index], "derived at {length}");
+    }
+}
+
+#[test]
+fn streaming_matches_the_one_shot_call() {
+    let data = data(10000);
+    for split in [0, 1, 63, 64, 65, 127, 128, 1023, 1024, 1025, 2048, 9999, 10000] {
+        let mut digest = [0; 32];
+        let mut streamed = [0; 32];
+        BLAKE2S::digest(&data, &mut digest);
+        let mut hash = BLAKE2S::new(32);
+        hash.update(&data[..split]);
+        hash.update(&data[split..]);
+        hash.finalize(&mut streamed);
+        assert_eq!(streamed, digest, "BLAKE2s at {split}");
+
+        let mut digest = [0; 64];
+        let mut streamed = [0; 64];
+        BLAKE2B::digest(&data, &mut digest);
+        let mut hash = BLAKE2B::new(64);
+        hash.update(&data[..split]);
+        hash.update(&data[split..]);
+        hash.finalize(&mut streamed);
+        assert_eq!(streamed, digest, "BLAKE2b at {split}");
+
+        let mut digest = [0; 32];
+        let mut streamed = [0; 32];
+        BLAKE3::digest(&data, &mut digest);
+        let mut hash = BLAKE3::new();
+        hash.update(&data[..split]);
+        hash.update(&data[split..]);
+        hash.finalize(&mut streamed);
+        assert_eq!(streamed, digest, "BLAKE3 at {split}");
+    }
+}
+
+#[test]
+fn blake3_streams_every_length() {
+    let data = data(4200);
+    for length in 0..data.len() {
+        let mut streamed = [0; 32];
+        let mut once = [0; 32];
+        let mut hash = BLAKE3::new();
+        for chunk in data[..length].chunks(97) {
+            hash.update(chunk);
+        }
+        hash.finalize(&mut streamed);
+        BLAKE3::digest(&data[..length], &mut once);
+        assert_eq!(streamed, once, "at {length}");
+    }
+}
+
+#[test]
+fn reset_restores_the_keyed_state() {
+    let key: [u8; 32] = core::array::from_fn(|index| index as u8);
+    let mut hash = BLAKE3::with_key(&key);
+    hash.update(&data(5000));
+    hash.reset();
+    hash.update(b"abc");
+    let mut after = [0; 32];
+    hash.finalize(&mut after);
+
+    let mut fresh = BLAKE3::with_key(&key);
+    fresh.update(b"abc");
+    let mut expected = [0; 32];
+    fresh.finalize(&mut expected);
+    assert_eq!(after, expected);
+
+    let mut hash = BLAKE2B::with_key(64, &(0..64).collect::<Vec<u8>>());
+    hash.update(b"discarded");
+    hash.reset();
+    hash.update(b"abc");
+    let mut after = [0; 64];
+    hash.finalize(&mut after);
+
+    let mut fresh = BLAKE2B::with_key(64, &(0..64).collect::<Vec<u8>>());
+    fresh.update(b"abc");
+    let mut expected = [0; 64];
+    fresh.finalize(&mut expected);
+    assert_eq!(after, expected);
+}

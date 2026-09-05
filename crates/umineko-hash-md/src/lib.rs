@@ -18,4 +18,4 @@ pub use md4::{MD4};
 #[cfg(feature = "md5")]
 pub use md5::{MD5};
 #[cfg(feature = "md6")]
-pub use md6::{MD6};
+pub use md6::{MD6, MD6Parameters};

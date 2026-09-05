@@ -8,4 +8,4 @@ pub mod errors;
 pub mod lz77;
 
 pub use errors::{LZ77Error};
-pub use lz77::{LZ77, LZ77Encoder, LZ77Decoder};
+pub use lz77::{LZ77, LZ77Decoder, LZ77Encoder, LZ77Matcher};
