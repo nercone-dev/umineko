@@ -34,6 +34,9 @@ umineko-provider-netbsd = { workspace = true }
 [target.'cfg(target_os = "wasi")'.dependencies]
 umineko-provider-wasi = { workspace = true }
 
+[target.'cfg(all(unix, not(any(target_os = "linux", target_vendor = "apple", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))))'.dependencies]
+umineko-provider-posix = { workspace = true }
+
 [features]
 default = ["ip", "icmp", "uds", "tcp", "udp", "hash", "crypto", "tls", "quic", "http", "dns", "codec", "constructor"]
 constructor = []
@@ -46,6 +49,7 @@ ip = [
     "umineko-provider-freebsd/ip",
     "umineko-provider-openbsd/ip",
     "umineko-provider-netbsd/ip",
+    "umineko-provider-posix/ip",
 ]
 icmp = [
     "umineko-provider/icmp",
@@ -56,6 +60,7 @@ icmp = [
     "umineko-provider-freebsd/icmp",
     "umineko-provider-openbsd/icmp",
     "umineko-provider-netbsd/icmp",
+    "umineko-provider-posix/icmp",
 ]
 uds = [
     "umineko-provider/uds",
@@ -66,6 +71,7 @@ uds = [
     "umineko-provider-freebsd/uds",
     "umineko-provider-openbsd/uds",
     "umineko-provider-netbsd/uds",
+    "umineko-provider-posix/uds",
 ]
 tcp = [
     "umineko-provider/tcp",
@@ -77,6 +83,7 @@ tcp = [
     "umineko-provider-openbsd/tcp",
     "umineko-provider-netbsd/tcp",
     "umineko-provider-wasi/tcp",
+    "umineko-provider-posix/tcp",
 ]
 udp = [
     "umineko-provider/udp",
@@ -88,6 +95,7 @@ udp = [
     "umineko-provider-openbsd/udp",
     "umineko-provider-netbsd/udp",
     "umineko-provider-wasi/udp",
+    "umineko-provider-posix/udp",
 ]
 hash = [
     "umineko-provider/hash",

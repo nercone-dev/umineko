@@ -27,8 +27,8 @@ impl Default for TLSServerConfig {
     fn default() -> Self {
         Self {
             versions: [TLSVersion::V1_3, TLSVersion::V1_2].to_vec(),
-            groups: [TLSGroup::X25519MLKEM768, TLSGroup::SECP384R1MLKEM1024, TLSGroup::SECP256R1MLKEM768, TLSGroup::X25519, TLSGroup::PRIME256V1, TLSGroup::SECP384R1].to_vec(),
-            ciphers: [TLSCipher::TLS_AES_256_GCM_SHA384, TLSCipher::TLS_AES_128_GCM_SHA256, TLSCipher::TLS_CHACHA20_POLY1305_SHA256, TLSCipher::ECDHE_ECDSA_AES256_GCM_SHA384, TLSCipher::ECDHE_RSA_AES256_GCM_SHA384].to_vec(),
+            groups: [TLSGroup::X25519MLKEM768, TLSGroup::SECP384R1MLKEM1024, TLSGroup::SECP256R1MLKEM768, TLSGroup::X25519, TLSGroup::SECP256R1, TLSGroup::SECP384R1].to_vec(),
+            ciphers: [TLSCipher::TLS_AES_256_GCM_SHA384, TLSCipher::TLS_AES_128_GCM_SHA256, TLSCipher::TLS_CHACHA20_POLY1305_SHA256, TLSCipher::TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLSCipher::TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384].to_vec(),
             signature_schemes: [TLSSignatureScheme::ECDSA_SECP256R1_SHA256, TLSSignatureScheme::ED25519, TLSSignatureScheme::RSA_PSS_RSAE_SHA256, TLSSignatureScheme::MLDSA65].to_vec(),
 
             application_protocols: Vec::new(),

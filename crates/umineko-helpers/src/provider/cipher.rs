@@ -10,11 +10,15 @@ pub struct CipherProviderRequest<'a> {
     pub associated: &'a [u8],
     pub counter: u32,
     pub padding: bool,
+    pub tag_size: Option<usize>,
+    pub digest: Option<&'static str>,
+    pub mask: Option<&'static str>,
+    pub section_size: Option<usize>,
 }
 
 impl<'a> CipherProviderRequest<'a> {
     pub fn new(algorithm: &'static str, key: &'a [u8]) -> Self {
-        Self { algorithm, key, nonce: &[], associated: &[], counter: 0, padding: false }
+        Self { algorithm, key, nonce: &[], associated: &[], counter: 0, padding: false, tag_size: None, digest: None, mask: None, section_size: None }
     }
 
     pub fn with_nonce(self, nonce: &'a [u8]) -> Self {
@@ -31,6 +35,22 @@ impl<'a> CipherProviderRequest<'a> {
 
     pub fn with_padding(self, padding: bool) -> Self {
         Self { padding, ..self }
+    }
+
+    pub fn with_tag_size(self, tag_size: usize) -> Self {
+        Self { tag_size: Some(tag_size), ..self }
+    }
+
+    pub fn with_digest(self, digest: &'static str) -> Self {
+        Self { digest: Some(digest), ..self }
+    }
+
+    pub fn with_mask(self, mask: &'static str) -> Self {
+        Self { mask: Some(mask), ..self }
+    }
+
+    pub fn with_section_size(self, section_size: Option<usize>) -> Self {
+        Self { section_size, ..self }
     }
 }
 

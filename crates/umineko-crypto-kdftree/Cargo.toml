@@ -1,0 +1,12 @@
+[package]
+name = "umineko-crypto-kdftree"
+description = "KDF_TREE"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-crypto-hmac = { workspace = true }
+umineko-helpers = { workspace = true }

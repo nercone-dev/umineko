@@ -7,11 +7,14 @@ pub struct SignatureProviderRequest<'a> {
     pub algorithm: &'static str,
     pub context: &'a [u8],
     pub seed: Option<&'a [u8]>,
+    pub digest: Option<&'static str>,
+    pub mask: Option<&'static str>,
+    pub salt_size: Option<usize>,
 }
 
 impl<'a> SignatureProviderRequest<'a> {
     pub fn new(algorithm: &'static str) -> Self {
-        Self { algorithm, context: &[], seed: None }
+        Self { algorithm, context: &[], seed: None, digest: None, mask: None, salt_size: None }
     }
 
     pub fn with_context(self, context: &'a [u8]) -> Self {
@@ -20,6 +23,18 @@ impl<'a> SignatureProviderRequest<'a> {
 
     pub fn with_seed(self, seed: &'a [u8]) -> Self {
         Self { seed: Some(seed), ..self }
+    }
+
+    pub fn with_digest(self, digest: &'static str) -> Self {
+        Self { digest: Some(digest), ..self }
+    }
+
+    pub fn with_mask(self, mask: &'static str) -> Self {
+        Self { mask: Some(mask), ..self }
+    }
+
+    pub fn with_salt_size(self, salt_size: usize) -> Self {
+        Self { salt_size: Some(salt_size), ..self }
     }
 }
 

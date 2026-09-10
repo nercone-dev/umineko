@@ -2,6 +2,7 @@ use alloc::vec::Vec;
 use crate::errors::HKDFError;
 
 use umineko_helpers::provider::{KDFProviderInputs, KDFProviderRequest, KDFProviders};
+use umineko_crypto_hmac::{HMAC, HMACHash};
 
 ///
 pub trait PRF {
@@ -11,6 +12,20 @@ pub trait PRF {
 
     fn name(&self) -> Option<&'static str> {
         None
+    }
+}
+
+impl PRF for HMACHash {
+    fn output_size(&self) -> usize {
+        self.digest_size()
+    }
+
+    fn compute(&self, key: &[u8], data: &[u8], output: &mut [u8]) {
+        HMAC::tag(*self, key, data, output);
+    }
+
+    fn name(&self) -> Option<&'static str> {
+        Some(self.as_str())
     }
 }
 

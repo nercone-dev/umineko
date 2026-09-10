@@ -6,15 +6,25 @@ use crate::provider::registry::ProviderRegistry;
 pub struct ExchangeProviderRequest<'a> {
     pub algorithm: &'static str,
     pub seed: Option<&'a [u8]>,
+    pub parameters: Option<&'a [u8]>,
+    pub context: &'a [u8],
 }
 
 impl<'a> ExchangeProviderRequest<'a> {
     pub fn new(algorithm: &'static str) -> Self {
-        Self { algorithm, seed: None }
+        Self { algorithm, seed: None, parameters: None, context: &[] }
+    }
+
+    pub fn with_context(self, context: &'a [u8]) -> Self {
+        Self { context, ..self }
     }
 
     pub fn with_seed(self, seed: &'a [u8]) -> Self {
         Self { seed: Some(seed), ..self }
+    }
+
+    pub fn with_parameters(self, parameters: &'a [u8]) -> Self {
+        Self { parameters: Some(parameters), ..self }
     }
 }
 

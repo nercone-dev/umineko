@@ -32,9 +32,10 @@ umineko-protocol-mqtt = { workspace = true, default-features = true, optional = 
 umineko-protocol-coap = { workspace = true, default-features = true, optional = true }
 umineko-protocol-oauth = { workspace = true, default-features = true, optional = true }
 umineko-protocol-jwt = { workspace = true, default-features = true, optional = true }
+umineko-protocol-kerberos = { workspace = true, default-features = true, optional = true }
 
 [features]
-default = ["ip", "icmp", "tls", "uds", "tcp", "udp", "quic", "http", "dns", "mail", "smtp", "imap", "pop3", "ftp", "ssh", "ntp", "dhcp", "arp", "ndp", "socks", "mqtt", "coap", "oauth", "jwt"]
+default = ["ip", "icmp", "tls", "uds", "tcp", "udp", "quic", "http", "dns", "mail", "smtp", "imap", "pop3", "ftp", "ssh", "ntp", "dhcp", "arp", "ndp", "socks", "mqtt", "coap", "oauth", "jwt", "kerberos"]
 ip = ["dep:umineko-protocol-ip"]
 icmp = ["dep:umineko-protocol-icmp"]
 tls = ["dep:umineko-protocol-tls"]
@@ -59,3 +60,4 @@ mqtt = ["dep:umineko-protocol-mqtt"]
 coap = ["dep:umineko-protocol-coap"]
 oauth = ["dep:umineko-protocol-oauth"]
 jwt = ["dep:umineko-protocol-jwt"]
+kerberos = ["dep:umineko-protocol-kerberos"]

@@ -56,6 +56,8 @@ impl AES {
             (Self::V128, AESMode::CTR) => "AES-128-CTR",
             (Self::V128, AESMode::GCM) => "AES-128-GCM",
             (Self::V128, AESMode::CCM) => "AES-128-CCM",
+            (Self::V128, AESMode::CCM8) => "AES-128-CCM8",
+            (Self::V128, AESMode::CBC_CS3) => "AES-128-CBC-CS3",
             (Self::V192, AESMode::ECB) => "AES-192-ECB",
             (Self::V192, AESMode::CBC) => "AES-192-CBC",
             (Self::V192, AESMode::CFB) => "AES-192-CFB",
@@ -63,6 +65,8 @@ impl AES {
             (Self::V192, AESMode::CTR) => "AES-192-CTR",
             (Self::V192, AESMode::GCM) => "AES-192-GCM",
             (Self::V192, AESMode::CCM) => "AES-192-CCM",
+            (Self::V192, AESMode::CCM8) => "AES-192-CCM8",
+            (Self::V192, AESMode::CBC_CS3) => "AES-192-CBC-CS3",
             (Self::V256, AESMode::ECB) => "AES-256-ECB",
             (Self::V256, AESMode::CBC) => "AES-256-CBC",
             (Self::V256, AESMode::CFB) => "AES-256-CFB",
@@ -70,6 +74,8 @@ impl AES {
             (Self::V256, AESMode::CTR) => "AES-256-CTR",
             (Self::V256, AESMode::GCM) => "AES-256-GCM",
             (Self::V256, AESMode::CCM) => "AES-256-CCM",
+            (Self::V256, AESMode::CCM8) => "AES-256-CCM8",
+            (Self::V256, AESMode::CBC_CS3) => "AES-256-CBC-CS3",
         }
     }
 }
@@ -89,11 +95,13 @@ pub enum AESMode {
     CTR,
     GCM,
     CCM,
+    CCM8,
+    CBC_CS3,
 }
 
 impl AESMode {
         pub fn authenticated(&self) -> bool {
-        matches!(self, Self::GCM | Self::CCM)
+        matches!(self, Self::GCM | Self::CCM | Self::CCM8)
     }
 
         pub fn padded(&self) -> bool {
@@ -117,6 +125,8 @@ impl AESMode {
             Self::CTR => "CTR",
             Self::GCM => "GCM",
             Self::CCM => "CCM",
+            Self::CCM8 => "CCM8",
+            Self::CBC_CS3 => "CBC-CS3",
         }
     }
 }

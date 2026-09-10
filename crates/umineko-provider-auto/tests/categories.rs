@@ -17,7 +17,9 @@ const CATEGORIES: &[ProviderCategory] = &[ProviderCategory::IP, ProviderCategory
 const CATEGORIES: &[ProviderCategory] = &[ProviderCategory::IP, ProviderCategory::ICMP, ProviderCategory::UDS, ProviderCategory::TCP, ProviderCategory::UDP, ProviderCategory::TLS, ProviderCategory::Hash, ProviderCategory::Cipher, ProviderCategory::Signature, ProviderCategory::Exchange, ProviderCategory::KDF];
 #[cfg(target_os = "wasi")]
 const CATEGORIES: &[ProviderCategory] = &[ProviderCategory::TCP, ProviderCategory::UDP, ProviderCategory::HTTP];
-#[cfg(not(any(target_os = "linux", target_vendor = "apple", target_os = "windows", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "wasi")))]
+#[cfg(all(unix, not(any(target_os = "linux", target_vendor = "apple", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))))]
+const CATEGORIES: &[ProviderCategory] = &[ProviderCategory::IP, ProviderCategory::ICMP, ProviderCategory::UDS, ProviderCategory::TCP, ProviderCategory::UDP];
+#[cfg(not(any(unix, target_os = "windows", target_os = "wasi")))]
 const CATEGORIES: &[ProviderCategory] = &[];
 
 #[test]

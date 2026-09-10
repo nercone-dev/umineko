@@ -12,7 +12,10 @@ umineko-crypto-ecdh = { workspace = true, default-features = true }
 umineko-crypto-mlkem = { workspace = true, default-features = true }
 
 [features]
-default = ["x25519mlkem768", "secp256r1mlkem768", "secp384r1mlkem1024"]
+default = ["x25519mlkem768", "secp256r1mlkem768", "secp384r1mlkem1024", "secp256r1mlkem512", "mlkem512x25519", "curvesm2mlkem768"]
 x25519mlkem768 = []
 secp256r1mlkem768 = []
 secp384r1mlkem1024 = []
+secp256r1mlkem512 = []
+mlkem512x25519 = []
+curvesm2mlkem768 = []

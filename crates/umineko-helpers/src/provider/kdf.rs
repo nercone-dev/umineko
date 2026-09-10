@@ -11,11 +11,13 @@ pub struct KDFProviderRequest {
     pub parallelism: u32,
     pub memory: u32,
     pub version: u32,
+    pub counter_size: u32,
+    pub length_size: u32,
 }
 
 impl KDFProviderRequest {
     pub fn new(algorithm: &'static str) -> Self {
-        Self { algorithm, prf: None, iterations: 0, cost: 0, block: 0, parallelism: 0, memory: 0, version: 0 }
+        Self { algorithm, prf: None, iterations: 0, cost: 0, block: 0, parallelism: 0, memory: 0, version: 0, counter_size: 0, length_size: 0 }
     }
 
     pub fn with_prf(self, prf: &'static str) -> Self {
@@ -32,6 +34,14 @@ impl KDFProviderRequest {
 
     pub fn with_memory(self, memory: u32, iterations: u32, parallelism: u32, version: u32) -> Self {
         Self { memory, iterations, parallelism, version, ..self }
+    }
+
+    pub fn with_counter_size(self, counter_size: u32) -> Self {
+        Self { counter_size, ..self }
+    }
+
+    pub fn with_length_size(self, length_size: u32) -> Self {
+        Self { length_size, ..self }
     }
 }
 

@@ -50,3 +50,5 @@ pub use umineko_protocol_coap as coap;
 pub use umineko_protocol_oauth as oauth;
 #[cfg(feature = "jwt")]
 pub use umineko_protocol_jwt as jwt;
+#[cfg(feature = "kerberos")]
+pub use umineko_protocol_kerberos as kerberos;

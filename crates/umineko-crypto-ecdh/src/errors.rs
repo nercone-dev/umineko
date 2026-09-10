@@ -5,6 +5,7 @@ use umineko_helpers::provider::ProviderError;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ECDHError {
         Curve,
+        Parameters,
         Key,
         Encoding,
         Point,

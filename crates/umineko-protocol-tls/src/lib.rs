@@ -18,6 +18,8 @@ pub mod helpers {
     pub mod handshake;
     pub mod certificate;
     pub mod key_schedule;
+    pub mod prf;
+    pub mod tree;
     pub mod sni;
     pub mod alpn;
     pub mod session;
@@ -25,6 +27,8 @@ pub mod helpers {
     pub use handshake::{TLSHandshake, TLSHandshakeType, TLSHandshakeState};
     pub use certificate::{TLSCertificate, TLSCertificateChain, TLSCertificateVerifier};
     pub use key_schedule::{TLSKeySchedule, TLSSecret};
+    pub use prf::{TLSPRF};
+    pub use tree::{TLSTree};
     pub use sni::{TLSServerName};
     pub use alpn::{TLSApplicationProtocol};
     pub use session::{TLSSession, TLSSessionStore, TLSSessionTicket};
@@ -61,5 +65,5 @@ pub mod types;
 pub mod provider;
 
 pub use errors::{TLSError, TLSAlert};
-pub use types::{TLSVersion, TLSRole, TLSGroup, TLSCipher, TLSSignatureScheme, TLSExtension, TLSLimits};
+pub use types::{TLSVersion, TLSRole, TLSRecommendation, TLSGroupKind, TLSGroupSpecification, TLSGroup, TLSECPointFormat, TLSECCurveType, TLSKeyExchange, TLSEncryption, TLSMAC, TLSHash, TLSCipherSpecification, TLSCipher, TLSSignatureSchemeSpecification, TLSSignatureScheme, TLSSignatureAlgorithm, TLSHashAlgorithm, TLSExtension, TLSLimits};
 pub use provider::{TLSProvider, TLSProviderRequest, TLSProviders};

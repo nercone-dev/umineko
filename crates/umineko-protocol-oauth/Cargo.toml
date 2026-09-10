@@ -9,4 +9,7 @@ license.workspace = true
 
 [dependencies]
 umineko-protocol-http = { workspace = true, default-features = true }
+umineko-protocol-jwt = { workspace = true, default-features = true }
 umineko-url = { workspace = true, default-features = true }
+umineko-hash-sha = { workspace = true, features = ["sha2"] }
+umineko-codec-base = { workspace = true, features = ["base64"] }

@@ -8,4 +8,5 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+umineko-crypto-pbkdf2 = { workspace = true }
 umineko-helpers = { workspace = true }

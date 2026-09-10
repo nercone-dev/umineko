@@ -20,6 +20,7 @@ pub enum umineko_provider_category_t {
     UMINEKO_PROVIDER_EXCHANGE = 12,
     UMINEKO_PROVIDER_KDF = 13,
     UMINEKO_PROVIDER_CODEC = 14,
+    UMINEKO_PROVIDER_RANDOM = 15,
 }
 
 impl umineko_provider_category_t {

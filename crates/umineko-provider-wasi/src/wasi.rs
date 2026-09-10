@@ -28,9 +28,9 @@ impl WASIProvider {
             6 => ProviderError::WouldBlock,
             27 => ProviderError::Interrupted,
             28 => ProviderError::Argument,
-            33 | 41 | 48 => ProviderError::Exhausted,
+            33 | 41 | 42 | 48 => ProviderError::Exhausted,
             52 | 58 => ProviderError::Unsupported,
-            54 | 68 => ProviderError::Closed,
+            15 | 64 => ProviderError::Closed,
             73 => ProviderError::Timeout,
             other => ProviderError::System(other),
         }

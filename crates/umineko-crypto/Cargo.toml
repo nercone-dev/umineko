@@ -26,9 +26,31 @@ umineko-crypto-scrypt = { workspace = true, default-features = true, optional = 
 umineko-crypto-pbkdf2 = { workspace = true, default-features = true, optional = true }
 umineko-crypto-argon2 = { workspace = true, default-features = true, optional = true }
 umineko-crypto-hybrid = { workspace = true, default-features = true, optional = true }
+umineko-crypto-hmac = { workspace = true, default-features = true, optional = true }
+umineko-crypto-dh = { workspace = true, default-features = true, optional = true }
+umineko-crypto-dsa = { workspace = true, default-features = true, optional = true }
+umineko-crypto-rc2 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-rc4 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-idea = { workspace = true, default-features = true, optional = true }
+umineko-crypto-seed = { workspace = true, default-features = true, optional = true }
+umineko-crypto-camellia = { workspace = true, default-features = true, optional = true }
+umineko-crypto-aria = { workspace = true, default-features = true, optional = true }
+umineko-crypto-sm2 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-sm4 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-aegis = { workspace = true, default-features = true, optional = true }
+umineko-crypto-gost = { workspace = true, default-features = true, optional = true }
+umineko-crypto-gostr3410 = { workspace = true, default-features = true, optional = true }
+umineko-crypto-srp = { workspace = true, default-features = true, optional = true }
+umineko-crypto-dragonfly = { workspace = true, default-features = true, optional = true }
+umineko-crypto-kdftree = { workspace = true, default-features = true, optional = true }
+umineko-crypto-cmac = { workspace = true, default-features = true, optional = true }
+umineko-crypto-kbkdf = { workspace = true, default-features = true, optional = true }
+umineko-crypto-eccsi = { workspace = true, default-features = true, optional = true }
+umineko-crypto-ibs = { workspace = true, default-features = true, optional = true }
+umineko-crypto-random = { workspace = true, default-features = true, optional = true }
 
 [features]
-default = ["rsa", "des", "aes", "chacha20", "poly1305", "ecdsa", "eddsa", "ecdh", "mlkem", "mldsa", "slhdsa", "hqc", "ascon", "hkdf", "scrypt", "pbkdf2", "argon2", "hybrid"]
+default = ["rsa", "des", "aes", "chacha20", "poly1305", "ecdsa", "eddsa", "ecdh", "mlkem", "mldsa", "slhdsa", "hqc", "ascon", "hkdf", "scrypt", "pbkdf2", "argon2", "hybrid", "hmac", "dh", "dsa", "rc2", "rc4", "idea", "seed", "camellia", "aria", "sm2", "sm4", "aegis", "gost", "gostr3410", "srp", "dragonfly", "kdftree", "cmac", "kbkdf", "eccsi", "ibs", "random"]
 rsa = ["dep:umineko-crypto-rsa"]
 des = ["dep:umineko-crypto-des"]
 aes = ["dep:umineko-crypto-aes"]
@@ -47,3 +69,25 @@ scrypt = ["dep:umineko-crypto-scrypt"]
 pbkdf2 = ["dep:umineko-crypto-pbkdf2"]
 argon2 = ["dep:umineko-crypto-argon2"]
 hybrid = ["dep:umineko-crypto-hybrid"]
+hmac = ["dep:umineko-crypto-hmac"]
+dh = ["dep:umineko-crypto-dh"]
+dsa = ["dep:umineko-crypto-dsa"]
+rc2 = ["dep:umineko-crypto-rc2"]
+rc4 = ["dep:umineko-crypto-rc4"]
+idea = ["dep:umineko-crypto-idea"]
+seed = ["dep:umineko-crypto-seed"]
+camellia = ["dep:umineko-crypto-camellia"]
+aria = ["dep:umineko-crypto-aria"]
+sm2 = ["dep:umineko-crypto-sm2"]
+sm4 = ["dep:umineko-crypto-sm4"]
+aegis = ["dep:umineko-crypto-aegis"]
+gost = ["dep:umineko-crypto-gost"]
+gostr3410 = ["dep:umineko-crypto-gostr3410"]
+srp = ["dep:umineko-crypto-srp"]
+dragonfly = ["dep:umineko-crypto-dragonfly"]
+kdftree = ["dep:umineko-crypto-kdftree"]
+cmac = ["dep:umineko-crypto-cmac"]
+kbkdf = ["dep:umineko-crypto-kbkdf"]
+eccsi = ["dep:umineko-crypto-eccsi"]
+ibs = ["dep:umineko-crypto-ibs"]
+random = ["dep:umineko-crypto-random"]

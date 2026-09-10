@@ -9,3 +9,12 @@ license.workspace = true
 
 [dependencies]
 umineko-codec-base = { workspace = true, features = ["base64"] }
+umineko-hash-sha = { workspace = true, features = ["sha1", "sha2"] }
+umineko-crypto-hmac = { workspace = true }
+umineko-crypto-rsa = { workspace = true }
+umineko-crypto-ecdsa = { workspace = true }
+umineko-crypto-eddsa = { workspace = true }
+umineko-crypto-mldsa = { workspace = true }
+umineko-crypto-aes = { workspace = true }
+umineko-crypto-ecdh = { workspace = true }
+umineko-crypto-pbkdf2 = { workspace = true }

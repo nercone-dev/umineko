@@ -14,6 +14,8 @@ pub use umineko_helpers::provider::{HashProvider, HashProviderRequest, HashProvi
 pub use umineko_helpers::provider::{CipherProvider, CipherProviderRequest, CipherProviders, SignatureProvider, SignatureProviderRequest, SignatureProviders, ExchangeProvider, ExchangeProviderRequest, ExchangeProviders, KDFProvider, KDFProviderRequest, KDFProviderInputs, KDFProviders};
 #[cfg(feature = "codec")]
 pub use umineko_helpers::provider::{CodecProvider, CodecProviderRequest, CodecDirection, CodecProviders};
+#[cfg(feature = "crypto")]
+pub use umineko_helpers::provider::{RandomProvider, RandomProviderRequest, RandomProviders};
 #[cfg(feature = "ip")]
 pub use umineko_protocol_ip::{IPProvider, IPProviderRequest, IPProviders};
 #[cfg(feature = "icmp")]

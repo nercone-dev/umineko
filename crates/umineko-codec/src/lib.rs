@@ -26,3 +26,5 @@ pub use umineko_codec_lzma as lzma;
 pub use umineko_codec_rle as rle;
 #[cfg(feature = "zstandard")]
 pub use umineko_codec_zstandard as zstandard;
+#[cfg(feature = "asn1")]
+pub use umineko_codec_asn1 as asn1;

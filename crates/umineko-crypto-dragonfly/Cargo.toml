@@ -1,0 +1,13 @@
+[package]
+name = "umineko-crypto-dragonfly"
+description = "Dragonfly password-authenticated key exchange"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-crypto-hmac = { workspace = true }
+umineko-crypto-ecdh = { workspace = true }
+umineko-crypto-dh = { workspace = true }

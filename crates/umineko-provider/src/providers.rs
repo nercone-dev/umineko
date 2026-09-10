@@ -32,6 +32,8 @@ use umineko_helpers::provider::ExchangeProviders;
 use umineko_helpers::provider::KDFProviders;
 #[cfg(feature = "codec")]
 use umineko_helpers::provider::CodecProviders;
+#[cfg(feature = "crypto")]
+use umineko_helpers::provider::RandomProviders;
 
 pub struct Providers;
 
@@ -100,6 +102,10 @@ impl Providers {
         if let Some(provider) = provider.clone().codec() {
             CodecProviders::global().register(provider)?;
         }
+        #[cfg(feature = "crypto")]
+        if let Some(provider) = provider.clone().random() {
+            RandomProviders::global().register(provider)?;
+        }
         let _ = provider;
         Ok(())
     }
@@ -165,6 +171,10 @@ impl Providers {
         #[cfg(feature = "codec")]
         {
             removed |= CodecProviders::global().unregister(name);
+        }
+        #[cfg(feature = "crypto")]
+        {
+            removed |= RandomProviders::global().unregister(name);
         }
         let _ = name;
         removed
@@ -266,6 +276,12 @@ impl Providers {
                 names.push(name);
             }
         }
+        #[cfg(feature = "crypto")]
+        for name in RandomProviders::global().names() {
+            if !names.contains(&name) {
+                names.push(name);
+            }
+        }
         names
     }
 
@@ -301,6 +317,8 @@ impl Providers {
             ProviderCategory::KDF => !KDFProviders::global().is_empty(),
         #[cfg(feature = "codec")]
             ProviderCategory::Codec => !CodecProviders::global().is_empty(),
+        #[cfg(feature = "crypto")]
+            ProviderCategory::Random => !RandomProviders::global().is_empty(),
             #[allow(unreachable_patterns)]
             _ => false,
         }
@@ -365,6 +383,10 @@ impl Providers {
         }
         #[cfg(feature = "codec")]
         if let Some(enabled) = CodecProviders::global().enabled(name) {
+            return Some(enabled);
+        }
+        #[cfg(feature = "crypto")]
+        if let Some(enabled) = RandomProviders::global().enabled(name) {
             return Some(enabled);
         }
         let _ = name;
@@ -433,6 +455,10 @@ impl Providers {
         {
             changed |= CodecProviders::global().set_enabled(name, enabled);
         }
+        #[cfg(feature = "crypto")]
+        {
+            changed |= RandomProviders::global().set_enabled(name, enabled);
+        }
         let _ = (name, enabled);
         changed
     }
@@ -496,6 +522,10 @@ impl Providers {
         }
         #[cfg(feature = "codec")]
         if let Some(priority) = CodecProviders::global().priority(name) {
+            return Some(priority);
+        }
+        #[cfg(feature = "crypto")]
+        if let Some(priority) = RandomProviders::global().priority(name) {
             return Some(priority);
         }
         let _ = name;
@@ -564,6 +594,10 @@ impl Providers {
         {
             changed |= CodecProviders::global().set_priority(name, priority);
         }
+        #[cfg(feature = "crypto")]
+        {
+            changed |= RandomProviders::global().set_priority(name, priority);
+        }
         let _ = (name, priority);
         changed
     }
@@ -600,6 +634,8 @@ impl Providers {
             ProviderCategory::KDF => KDFProviders::global().policy(),
         #[cfg(feature = "codec")]
             ProviderCategory::Codec => CodecProviders::global().policy(),
+        #[cfg(feature = "crypto")]
+            ProviderCategory::Random => RandomProviders::global().policy(),
             #[allow(unreachable_patterns)]
             _ => ProviderPolicy::DEFAULT,
         }
@@ -665,6 +701,10 @@ impl Providers {
         #[cfg(feature = "codec")]
         {
             CodecProviders::global().set_policy(policy.clone());
+        }
+        #[cfg(feature = "crypto")]
+        {
+            RandomProviders::global().set_policy(policy.clone());
         }
         let _ = policy;
     }
@@ -744,6 +784,11 @@ impl Providers {
         #[cfg(feature = "codec")]
             ProviderCategory::Codec => {
                 CodecProviders::global().set_policy(policy);
+                true
+            }
+        #[cfg(feature = "crypto")]
+            ProviderCategory::Random => {
+                RandomProviders::global().set_policy(policy);
                 true
             }
             #[allow(unreachable_patterns)]

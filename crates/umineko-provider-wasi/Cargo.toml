@@ -8,7 +8,7 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-umineko-provider = { workspace = true, features = ["tcp", "udp", "http"] }
+umineko-provider = { workspace = true }
 umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
 umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
 umineko-protocol-http = { workspace = true, default-features = true, optional = true }

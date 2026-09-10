@@ -1,0 +1,16 @@
+[package]
+name = "umineko-crypto-hmac"
+description = "HMAC"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }
+umineko-hash-md = { workspace = true, features = ["md5"] }
+umineko-hash-sha = { workspace = true, features = ["sha1", "sha2", "sha3"] }
+umineko-hash-sm3 = { workspace = true }
+umineko-hash-streebog = { workspace = true }
+umineko-crypto-ascon = { workspace = true }

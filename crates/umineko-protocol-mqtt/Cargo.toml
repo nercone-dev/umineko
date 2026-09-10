@@ -7,6 +7,11 @@ rust-version.workspace = true
 repository.workspace = true
 license.workspace = true
 
+[dependencies]
+umineko-protocol-ip = { workspace = true, default-features = true }
+umineko-protocol-tcp = { workspace = true, default-features = true }
+umineko-protocol-tls = { workspace = true, default-features = true }
+
 [features]
 default = ["mqtt31", "mqtt50"]
 mqtt31 = []

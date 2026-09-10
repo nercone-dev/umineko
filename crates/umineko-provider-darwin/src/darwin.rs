@@ -1,6 +1,7 @@
 use alloc::sync::Arc;
 
 use umineko_provider::{Provider, ProviderBundle, ProviderError, ProviderHandle};
+use umineko_provider_posix::POSIXProvider;
 #[cfg(feature = "ip")]
 use umineko_provider::IPProvider;
 #[cfg(feature = "icmp")]
@@ -41,17 +42,7 @@ impl DarwinProvider {
     }
 
     pub fn error(code: i32) -> ProviderError {
-        match code {
-            1 | 13 => ProviderError::Permission,
-            4 => ProviderError::Interrupted,
-            35 => ProviderError::WouldBlock,
-            12 | 23 | 24 | 55 => ProviderError::Exhausted,
-            22 => ProviderError::Argument,
-            45 | 78 => ProviderError::Unsupported,
-            60 => ProviderError::Timeout,
-            32 | 54 | 58 => ProviderError::Closed,
-            other => ProviderError::System(other),
-        }
+        POSIXProvider::error(code)
     }
 }
 
@@ -61,7 +52,9 @@ impl Provider for DarwinProvider {
     }
 
     fn release(&self, handle: ProviderHandle) {
-        let _ = handle;
+        if POSIXProvider::provides(handle.category) {
+            POSIXProvider.release(handle);
+        }
     }
 }
 

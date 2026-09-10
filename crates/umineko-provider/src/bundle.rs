@@ -31,6 +31,8 @@ use umineko_helpers::provider::ExchangeProvider;
 use umineko_helpers::provider::KDFProvider;
 #[cfg(feature = "codec")]
 use umineko_helpers::provider::CodecProvider;
+#[cfg(feature = "crypto")]
+use umineko_helpers::provider::RandomProvider;
 
 pub trait ProviderBundle: Provider {
     #[cfg(feature = "ip")]
@@ -105,6 +107,11 @@ pub trait ProviderBundle: Provider {
 
     #[cfg(feature = "codec")]
     fn codec(self: Arc<Self>) -> Option<Arc<dyn CodecProvider>> {
+        None
+    }
+
+    #[cfg(feature = "crypto")]
+    fn random(self: Arc<Self>) -> Option<Arc<dyn RandomProvider>> {
         None
     }
 }

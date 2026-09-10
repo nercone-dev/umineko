@@ -10,16 +10,25 @@ license.workspace = true
 [dependencies]
 umineko-helpers = { workspace = true, default-features = true }
 umineko-url = { workspace = true, default-features = true }
+umineko-protocol-ip = { workspace = true, default-features = true }
 umineko-protocol-tcp = { workspace = true, default-features = true }
 umineko-protocol-tls = { workspace = true, default-features = true }
 umineko-protocol-uds = { workspace = true, default-features = true, optional = true }
 umineko-protocol-quic = { workspace = true, default-features = true, optional = true }
+umineko-codec-zstandard = { workspace = true, default-features = true }
+umineko-codec-brotli = { workspace = true, default-features = true }
+umineko-codec-gzip = { workspace = true, default-features = true }
+umineko-codec-deflate = { workspace = true, default-features = true }
+umineko-codec-huffman = { workspace = true, features = ["static"], optional = true }
+umineko-hash-crc = { workspace = true, features = ["adler32"] }
+umineko-hash-sha = { workspace = true, features = ["sha1"], optional = true }
+umineko-codec-base = { workspace = true, features = ["base64"], optional = true }
 
 [features]
 default = ["http10", "http11", "http20", "http30", "websocket", "uds"]
 http10 = []
 http11 = []
-http20 = []
-http30 = ["dep:umineko-protocol-quic"]
-websocket = []
+http20 = ["dep:umineko-codec-huffman"]
+http30 = ["dep:umineko-protocol-quic", "dep:umineko-codec-huffman"]
+websocket = ["dep:umineko-hash-sha", "dep:umineko-codec-base"]
 uds = ["dep:umineko-protocol-uds"]

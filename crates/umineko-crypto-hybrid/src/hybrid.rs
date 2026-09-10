@@ -2,7 +2,7 @@ use alloc::vec::Vec;
 use core::fmt;
 use crate::errors::HybridKEXError;
 
-use umineko_crypto_ecdh::{ECDH, ECDHPrivateKey, ECDHPublicKey};
+use umineko_crypto_ecdh::{ECDHCurve, ECDHPrivateKey, ECDHPublicKey};
 use umineko_crypto_mlkem::{MLKEM, MLKEMPrivateKey, MLKEMPublicKey, MLKEMCiphertext};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -13,10 +13,16 @@ pub enum HybridKEX {
     SECP256R1MLKEM768,
     #[cfg(feature = "secp384r1mlkem1024")]
     SECP384R1MLKEM1024,
+    #[cfg(feature = "secp256r1mlkem512")]
+    SECP256R1MLKEM512,
+    #[cfg(feature = "mlkem512x25519")]
+    MLKEM512X25519,
+    #[cfg(feature = "curvesm2mlkem768")]
+    CURVESM2MLKEM768,
 }
 
 impl HybridKEX {
-    pub fn ecdh(&self) -> ECDH {
+    pub fn ecdh(&self) -> ECDHCurve {
         todo!()
     }
 

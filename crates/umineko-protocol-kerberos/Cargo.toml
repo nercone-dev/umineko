@@ -1,0 +1,23 @@
+[package]
+name = "umineko-protocol-kerberos"
+description = "Kerberos"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }
+umineko-protocol-ip = { workspace = true, default-features = true }
+umineko-protocol-tcp = { workspace = true, default-features = true }
+umineko-protocol-udp = { workspace = true, default-features = true }
+umineko-hash-md = { workspace = true, features = ["md4", "md5"] }
+umineko-hash-sha = { workspace = true, features = ["sha1", "sha2"] }
+umineko-hash-crc = { workspace = true, features = ["crc32"] }
+umineko-crypto-des = { workspace = true }
+umineko-crypto-aes = { workspace = true }
+umineko-crypto-camellia = { workspace = true }
+umineko-crypto-rc4 = { workspace = true }
+umineko-crypto-hmac = { workspace = true }
+umineko-crypto-pbkdf2 = { workspace = true }

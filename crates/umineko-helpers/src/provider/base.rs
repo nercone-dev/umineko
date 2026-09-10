@@ -20,10 +20,11 @@ pub enum ProviderCategory {
     Exchange,
     KDF,
     Codec,
+    Random,
 }
 
 impl ProviderCategory {
-    pub const ALL: [Self; 15] = [Self::IP, Self::ICMP, Self::UDS, Self::TCP, Self::UDP, Self::TLS, Self::QUIC, Self::HTTP, Self::DNS, Self::Hash, Self::Cipher, Self::Signature, Self::Exchange, Self::KDF, Self::Codec];
+    pub const ALL: [Self; 16] = [Self::IP, Self::ICMP, Self::UDS, Self::TCP, Self::UDP, Self::TLS, Self::QUIC, Self::HTTP, Self::DNS, Self::Hash, Self::Cipher, Self::Signature, Self::Exchange, Self::KDF, Self::Codec, Self::Random];
 
     pub fn as_str(&self) -> &'static str {
         match self {
@@ -42,6 +43,7 @@ impl ProviderCategory {
             Self::Exchange => "exchange",
             Self::KDF => "kdf",
             Self::Codec => "codec",
+            Self::Random => "random",
         }
     }
 

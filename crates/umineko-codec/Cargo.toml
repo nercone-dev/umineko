@@ -20,9 +20,10 @@ umineko-codec-lzss = { workspace = true, default-features = true, optional = tru
 umineko-codec-lzma = { workspace = true, default-features = true, optional = true }
 umineko-codec-rle = { workspace = true, default-features = true, optional = true }
 umineko-codec-zstandard = { workspace = true, default-features = true, optional = true }
+umineko-codec-asn1 = { workspace = true, default-features = true, optional = true }
 
 [features]
-default = ["base", "brotli", "deflate", "gzip", "huffman", "lz4", "lz77", "lz78", "lzss", "lzma", "rle", "zstandard"]
+default = ["base", "brotli", "deflate", "gzip", "huffman", "lz4", "lz77", "lz78", "lzss", "lzma", "rle", "zstandard", "asn1"]
 base = ["dep:umineko-codec-base"]
 brotli = ["dep:umineko-codec-brotli"]
 deflate = ["dep:umineko-codec-deflate"]
@@ -35,3 +36,4 @@ lzss = ["dep:umineko-codec-lzss"]
 lzma = ["dep:umineko-codec-lzma"]
 rle = ["dep:umineko-codec-rle"]
 zstandard = ["dep:umineko-codec-zstandard"]
+asn1 = ["dep:umineko-codec-asn1"]

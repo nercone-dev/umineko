@@ -20,6 +20,7 @@ dependencies = [
 name = "umineko-codec"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-asn1",
  "umineko-codec-base",
  "umineko-codec-brotli",
  "umineko-codec-deflate",
@@ -35,6 +36,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "umineko-codec-asn1"
+version = "0.1.0"
+
+[[package]]
 name = "umineko-codec-base"
 version = "0.1.0"
 
@@ -42,6 +47,7 @@ version = "0.1.0"
 name = "umineko-codec-brotli"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-huffman",
  "umineko-helpers",
 ]
 
@@ -71,6 +77,7 @@ version = "0.1.0"
 name = "umineko-codec-lz4"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-xxhash",
  "umineko-helpers",
 ]
 
@@ -113,6 +120,8 @@ dependencies = [
 name = "umineko-codec-zstandard"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-huffman",
+ "umineko-hash-xxhash",
  "umineko-helpers",
 ]
 
@@ -120,24 +129,53 @@ dependencies = [
 name = "umineko-crypto"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-aegis",
  "umineko-crypto-aes",
  "umineko-crypto-argon2",
+ "umineko-crypto-aria",
  "umineko-crypto-ascon",
+ "umineko-crypto-camellia",
  "umineko-crypto-chacha20",
+ "umineko-crypto-cmac",
  "umineko-crypto-des",
+ "umineko-crypto-dh",
+ "umineko-crypto-dragonfly",
+ "umineko-crypto-dsa",
+ "umineko-crypto-eccsi",
  "umineko-crypto-ecdh",
  "umineko-crypto-ecdsa",
  "umineko-crypto-eddsa",
+ "umineko-crypto-gost",
+ "umineko-crypto-gostr3410",
  "umineko-crypto-hkdf",
+ "umineko-crypto-hmac",
  "umineko-crypto-hqc",
  "umineko-crypto-hybrid",
+ "umineko-crypto-ibs",
+ "umineko-crypto-idea",
+ "umineko-crypto-kbkdf",
+ "umineko-crypto-kdftree",
  "umineko-crypto-mldsa",
  "umineko-crypto-mlkem",
  "umineko-crypto-pbkdf2",
  "umineko-crypto-poly1305",
+ "umineko-crypto-random",
+ "umineko-crypto-rc2",
+ "umineko-crypto-rc4",
  "umineko-crypto-rsa",
  "umineko-crypto-scrypt",
+ "umineko-crypto-seed",
  "umineko-crypto-slhdsa",
+ "umineko-crypto-sm2",
+ "umineko-crypto-sm4",
+ "umineko-crypto-srp",
+]
+
+[[package]]
+name = "umineko-crypto-aegis"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
 ]
 
 [[package]]
@@ -151,6 +189,14 @@ dependencies = [
 name = "umineko-crypto-argon2"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-blake",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-aria"
+version = "0.1.0"
+dependencies = [
  "umineko-helpers",
 ]
 
@@ -162,14 +208,63 @@ dependencies = [
 ]
 
 [[package]]
-name = "umineko-crypto-chacha20"
+name = "umineko-crypto-camellia"
 version = "0.1.0"
 dependencies = [
  "umineko-helpers",
 ]
 
 [[package]]
+name = "umineko-crypto-chacha20"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-poly1305",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-cmac"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-aes",
+ "umineko-crypto-camellia",
+ "umineko-helpers",
+]
+
+[[package]]
 name = "umineko-crypto-des"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-dh"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-dragonfly"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-dh",
+ "umineko-crypto-ecdh",
+ "umineko-crypto-hmac",
+]
+
+[[package]]
+name = "umineko-crypto-dsa"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-hmac",
+ "umineko-hash-sha",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-eccsi"
 version = "0.1.0"
 dependencies = [
  "umineko-helpers",
@@ -186,6 +281,8 @@ dependencies = [
 name = "umineko-crypto-ecdsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-hmac",
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -193,6 +290,25 @@ dependencies = [
 name = "umineko-crypto-eddsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-gost"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-gostr3410"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-gost",
+ "umineko-crypto-hmac",
+ "umineko-crypto-kdftree",
+ "umineko-hash-streebog",
  "umineko-helpers",
 ]
 
@@ -200,6 +316,19 @@ dependencies = [
 name = "umineko-crypto-hkdf"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-hmac",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-hmac"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-ascon",
+ "umineko-hash-md",
+ "umineko-hash-sha",
+ "umineko-hash-sm3",
+ "umineko-hash-streebog",
  "umineko-helpers",
 ]
 
@@ -207,6 +336,7 @@ dependencies = [
 name = "umineko-crypto-hqc"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -219,9 +349,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "umineko-crypto-ibs"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-idea"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-kbkdf"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-cmac",
+ "umineko-crypto-hmac",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-kdftree"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-hmac",
+ "umineko-helpers",
+]
+
+[[package]]
 name = "umineko-crypto-mldsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -229,6 +391,7 @@ dependencies = [
 name = "umineko-crypto-mlkem"
 version = "0.1.0"
 dependencies = [
+ "umineko-hash-sha",
  "umineko-helpers",
 ]
 
@@ -236,6 +399,7 @@ dependencies = [
 name = "umineko-crypto-pbkdf2"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-hmac",
  "umineko-helpers",
 ]
 
@@ -247,14 +411,44 @@ dependencies = [
 ]
 
 [[package]]
-name = "umineko-crypto-rsa"
+name = "umineko-crypto-random"
 version = "0.1.0"
 dependencies = [
  "umineko-helpers",
 ]
 
 [[package]]
+name = "umineko-crypto-rc2"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-rc4"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-rsa"
+version = "0.1.0"
+dependencies = [
+ "umineko-hash-sha",
+ "umineko-helpers",
+]
+
+[[package]]
 name = "umineko-crypto-scrypt"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-pbkdf2",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-seed"
 version = "0.1.0"
 dependencies = [
  "umineko-helpers",
@@ -264,7 +458,31 @@ dependencies = [
 name = "umineko-crypto-slhdsa"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-hmac",
+ "umineko-hash-sha",
  "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-sm2"
+version = "0.1.0"
+dependencies = [
+ "umineko-hash-sm3",
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-sm4"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
+name = "umineko-crypto-srp"
+version = "0.1.0"
+dependencies = [
+ "umineko-hash-sha",
 ]
 
 [[package]]
@@ -285,6 +503,7 @@ dependencies = [
  "umineko-hash-sha",
  "umineko-hash-siphash",
  "umineko-hash-sm3",
+ "umineko-hash-streebog",
  "umineko-hash-xxhash",
 ]
 
@@ -338,6 +557,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "umineko-hash-streebog"
+version = "0.1.0"
+dependencies = [
+ "umineko-helpers",
+]
+
+[[package]]
 name = "umineko-hash-xxhash"
 version = "0.1.0"
 dependencies = [
@@ -362,6 +588,7 @@ dependencies = [
  "umineko-protocol-imap",
  "umineko-protocol-ip",
  "umineko-protocol-jwt",
+ "umineko-protocol-kerberos",
  "umineko-protocol-mail",
  "umineko-protocol-mqtt",
  "umineko-protocol-ndp",
@@ -388,20 +615,35 @@ dependencies = [
 [[package]]
 name = "umineko-protocol-coap"
 version = "0.1.0"
+dependencies = [
+ "umineko-protocol-ip",
+ "umineko-protocol-tls",
+ "umineko-protocol-udp",
+ "umineko-url",
+]
 
 [[package]]
 name = "umineko-protocol-dhcp"
 version = "0.1.0"
 dependencies = [
+ "umineko-protocol-arp",
  "umineko-protocol-ip",
+ "umineko-protocol-ndp",
+ "umineko-protocol-udp",
 ]
 
 [[package]]
 name = "umineko-protocol-dns"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-base",
+ "umineko-crypto-ecdsa",
+ "umineko-crypto-eddsa",
+ "umineko-crypto-rsa",
+ "umineko-hash-sha",
  "umineko-helpers",
  "umineko-protocol-http",
+ "umineko-protocol-ip",
  "umineko-protocol-quic",
  "umineko-protocol-tcp",
  "umineko-protocol-tls",
@@ -411,12 +653,26 @@ dependencies = [
 [[package]]
 name = "umineko-protocol-ftp"
 version = "0.1.0"
+dependencies = [
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-tls",
+]
 
 [[package]]
 name = "umineko-protocol-http"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-base",
+ "umineko-codec-brotli",
+ "umineko-codec-deflate",
+ "umineko-codec-gzip",
+ "umineko-codec-huffman",
+ "umineko-codec-zstandard",
+ "umineko-hash-crc",
+ "umineko-hash-sha",
  "umineko-helpers",
+ "umineko-protocol-ip",
  "umineko-protocol-quic",
  "umineko-protocol-tcp",
  "umineko-protocol-tls",
@@ -435,6 +691,12 @@ dependencies = [
 [[package]]
 name = "umineko-protocol-imap"
 version = "0.1.0"
+dependencies = [
+ "umineko-codec-base",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-tls",
+]
 
 [[package]]
 name = "umineko-protocol-ip"
@@ -448,18 +710,56 @@ name = "umineko-protocol-jwt"
 version = "0.1.0"
 dependencies = [
  "umineko-codec-base",
+ "umineko-crypto-aes",
+ "umineko-crypto-ecdh",
+ "umineko-crypto-ecdsa",
+ "umineko-crypto-eddsa",
+ "umineko-crypto-hmac",
+ "umineko-crypto-mldsa",
+ "umineko-crypto-pbkdf2",
+ "umineko-crypto-rsa",
+ "umineko-hash-sha",
+]
+
+[[package]]
+name = "umineko-protocol-kerberos"
+version = "0.1.0"
+dependencies = [
+ "umineko-crypto-aes",
+ "umineko-crypto-camellia",
+ "umineko-crypto-des",
+ "umineko-crypto-hmac",
+ "umineko-crypto-pbkdf2",
+ "umineko-crypto-rc4",
+ "umineko-hash-crc",
+ "umineko-hash-md",
+ "umineko-hash-sha",
+ "umineko-helpers",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-udp",
 ]
 
 [[package]]
 name = "umineko-protocol-mail"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-base",
+ "umineko-crypto-eddsa",
+ "umineko-crypto-rsa",
+ "umineko-hash-sha",
  "umineko-protocol-dns",
+ "umineko-protocol-ip",
 ]
 
 [[package]]
 name = "umineko-protocol-mqtt"
 version = "0.1.0"
+dependencies = [
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-tls",
+]
 
 [[package]]
 name = "umineko-protocol-ndp"
@@ -472,38 +772,98 @@ dependencies = [
 [[package]]
 name = "umineko-protocol-ntp"
 version = "0.1.0"
+dependencies = [
+ "umineko-crypto-aes",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-tls",
+ "umineko-protocol-udp",
+]
 
 [[package]]
 name = "umineko-protocol-oauth"
 version = "0.1.0"
 dependencies = [
+ "umineko-codec-base",
+ "umineko-hash-sha",
  "umineko-protocol-http",
+ "umineko-protocol-jwt",
  "umineko-url",
 ]
 
 [[package]]
 name = "umineko-protocol-pop3"
 version = "0.1.0"
+dependencies = [
+ "umineko-codec-base",
+ "umineko-hash-md",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-tls",
+]
 
 [[package]]
 name = "umineko-protocol-quic"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-aes",
+ "umineko-crypto-chacha20",
+ "umineko-crypto-hkdf",
+ "umineko-hash-sha",
  "umineko-helpers",
+ "umineko-protocol-ip",
  "umineko-protocol-tls",
+ "umineko-protocol-udp",
 ]
 
 [[package]]
 name = "umineko-protocol-smtp"
 version = "0.1.0"
+dependencies = [
+ "umineko-codec-base",
+ "umineko-crypto-hmac",
+ "umineko-crypto-pbkdf2",
+ "umineko-hash-md",
+ "umineko-hash-sha",
+ "umineko-protocol-dns",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-tls",
+]
 
 [[package]]
 name = "umineko-protocol-socks"
 version = "0.1.0"
+dependencies = [
+ "umineko-protocol-dns",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-udp",
+]
 
 [[package]]
 name = "umineko-protocol-ssh"
 version = "0.1.0"
+dependencies = [
+ "umineko-codec-base",
+ "umineko-codec-deflate",
+ "umineko-crypto-aes",
+ "umineko-crypto-chacha20",
+ "umineko-crypto-dh",
+ "umineko-crypto-ecdh",
+ "umineko-crypto-ecdsa",
+ "umineko-crypto-eddsa",
+ "umineko-crypto-hmac",
+ "umineko-crypto-mldsa",
+ "umineko-crypto-mlkem",
+ "umineko-crypto-poly1305",
+ "umineko-crypto-rsa",
+ "umineko-hash-crc",
+ "umineko-hash-sha",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-uds",
+]
 
 [[package]]
 name = "umineko-protocol-tcp"
@@ -517,7 +877,44 @@ dependencies = [
 name = "umineko-protocol-tls"
 version = "0.1.0"
 dependencies = [
+ "umineko-crypto-aegis",
+ "umineko-crypto-aes",
+ "umineko-crypto-aria",
+ "umineko-crypto-ascon",
+ "umineko-crypto-camellia",
+ "umineko-crypto-chacha20",
+ "umineko-crypto-des",
+ "umineko-crypto-dh",
+ "umineko-crypto-dragonfly",
+ "umineko-crypto-dsa",
+ "umineko-crypto-ecdh",
+ "umineko-crypto-ecdsa",
+ "umineko-crypto-eddsa",
+ "umineko-crypto-gost",
+ "umineko-crypto-gostr3410",
+ "umineko-crypto-hkdf",
+ "umineko-crypto-hmac",
+ "umineko-crypto-hybrid",
+ "umineko-crypto-idea",
+ "umineko-crypto-kdftree",
+ "umineko-crypto-mldsa",
+ "umineko-crypto-mlkem",
+ "umineko-crypto-poly1305",
+ "umineko-crypto-rc2",
+ "umineko-crypto-rc4",
+ "umineko-crypto-rsa",
+ "umineko-crypto-seed",
+ "umineko-crypto-sm2",
+ "umineko-crypto-sm4",
+ "umineko-crypto-srp",
+ "umineko-hash-md",
+ "umineko-hash-sha",
+ "umineko-hash-sm3",
+ "umineko-hash-streebog",
  "umineko-helpers",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
+ "umineko-protocol-udp",
 ]
 
 [[package]]
@@ -561,6 +958,7 @@ dependencies = [
  "umineko-protocol-udp",
  "umineko-protocol-uds",
  "umineko-provider",
+ "umineko-provider-posix",
 ]
 
 [[package]]
@@ -574,6 +972,7 @@ dependencies = [
  "umineko-provider-linux",
  "umineko-provider-netbsd",
  "umineko-provider-openbsd",
+ "umineko-provider-posix",
  "umineko-provider-wasi",
  "umineko-provider-windows",
 ]
@@ -590,6 +989,7 @@ dependencies = [
  "umineko-protocol-udp",
  "umineko-protocol-uds",
  "umineko-provider",
+ "umineko-provider-posix",
 ]
 
 [[package]]
@@ -603,6 +1003,7 @@ dependencies = [
  "umineko-protocol-udp",
  "umineko-protocol-uds",
  "umineko-provider",
+ "umineko-provider-posix",
 ]
 
 [[package]]
@@ -616,6 +1017,7 @@ dependencies = [
  "umineko-protocol-udp",
  "umineko-protocol-uds",
  "umineko-provider",
+ "umineko-provider-posix",
 ]
 
 [[package]]
@@ -629,6 +1031,7 @@ dependencies = [
  "umineko-protocol-udp",
  "umineko-protocol-uds",
  "umineko-provider",
+ "umineko-provider-posix",
 ]
 
 [[package]]
@@ -639,6 +1042,19 @@ dependencies = [
  "umineko-protocol-ip",
  "umineko-protocol-tcp",
  "umineko-protocol-tls",
+ "umineko-protocol-udp",
+ "umineko-protocol-uds",
+ "umineko-provider",
+ "umineko-provider-posix",
+]
+
+[[package]]
+name = "umineko-provider-posix"
+version = "0.1.0"
+dependencies = [
+ "umineko-protocol-icmp",
+ "umineko-protocol-ip",
+ "umineko-protocol-tcp",
  "umineko-protocol-udp",
  "umineko-protocol-uds",
  "umineko-provider",

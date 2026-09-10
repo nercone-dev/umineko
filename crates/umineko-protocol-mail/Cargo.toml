@@ -9,10 +9,15 @@ license.workspace = true
 
 [dependencies]
 umineko-protocol-dns = { workspace = true, default-features = true }
+umineko-protocol-ip = { workspace = true, default-features = true, optional = true }
+umineko-crypto-rsa = { workspace = true, optional = true }
+umineko-crypto-eddsa = { workspace = true, optional = true }
+umineko-hash-sha = { workspace = true, features = ["sha2"], optional = true }
+umineko-codec-base = { workspace = true, features = ["base64"], optional = true }
 
 [features]
 default = ["spf", "dkim", "dmarc", "bimi"]
-spf = []
-dkim = []
+spf = ["dep:umineko-protocol-ip"]
+dkim = ["dep:umineko-crypto-rsa", "dep:umineko-crypto-eddsa", "dep:umineko-hash-sha", "dep:umineko-codec-base"]
 dmarc = []
 bimi = []

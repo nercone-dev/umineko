@@ -2,39 +2,39 @@ use umineko_provider::{ICMPProvider, ICMPProviderRequest, ProviderError, Provide
 use umineko_protocol_icmp::{ICMPType, ICMPCode};
 use umineko_protocol_ip::IPAddress;
 use core::task::{Context, Poll};
+use umineko_provider_posix::POSIXProvider;
 use crate::android::AndroidProvider;
 
 impl ICMPProvider for AndroidProvider {
     fn supports(&self, request: &ICMPProviderRequest<'_>) -> bool {
-        let _ = request;
-        false
+        ICMPProvider::supports(&POSIXProvider, request)
     }
 
     fn open(&self, request: &ICMPProviderRequest<'_>) -> Result<ProviderHandle, ProviderError> {
-        todo!()
+        ICMPProvider::open(&POSIXProvider, request)
     }
 
     fn poll_ready(&self, handle: ProviderHandle, interest: ProviderInterest, cx: &mut Context<'_>) -> Poll<Result<(), ProviderError>> {
-        todo!()
+        ICMPProvider::poll_ready(&POSIXProvider, handle, interest, cx)
     }
 
     fn send(&self, handle: ProviderHandle, destination: IPAddress, kind: ICMPType, code: ICMPCode, payload: &[u8]) -> Result<usize, ProviderError> {
-        todo!()
+        ICMPProvider::send(&POSIXProvider, handle, destination, kind, code, payload)
     }
 
     fn receive(&self, handle: ProviderHandle, payload: &mut [u8]) -> Result<(ICMPType, ICMPCode, usize, IPAddress), ProviderError> {
-        todo!()
+        ICMPProvider::receive(&POSIXProvider, handle, payload)
     }
 
     fn close(&self, handle: ProviderHandle) -> Result<(), ProviderError> {
-        todo!()
+        ICMPProvider::close(&POSIXProvider, handle)
     }
 
     fn local(&self, handle: ProviderHandle) -> Result<IPAddress, ProviderError> {
-        todo!()
+        ICMPProvider::local(&POSIXProvider, handle)
     }
 
     fn remote(&self, handle: ProviderHandle) -> Result<Option<IPAddress>, ProviderError> {
-        todo!()
+        ICMPProvider::remote(&POSIXProvider, handle)
     }
 }

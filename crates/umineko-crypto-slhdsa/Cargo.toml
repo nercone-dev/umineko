@@ -8,4 +8,6 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+umineko-hash-sha = { workspace = true, features = ["sha2", "sha3"] }
+umineko-crypto-hmac = { workspace = true }
 umineko-helpers = { workspace = true }

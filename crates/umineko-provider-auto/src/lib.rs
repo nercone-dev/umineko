@@ -22,6 +22,8 @@ pub use umineko_provider_openbsd as openbsd;
 pub use umineko_provider_netbsd as netbsd;
 #[cfg(target_os = "wasi")]
 pub use umineko_provider_wasi as wasi;
+#[cfg(all(unix, not(any(target_os = "linux", target_vendor = "apple", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))))]
+pub use umineko_provider_posix as posix;
 
 #[cfg(target_os = "linux")]
 pub use umineko_provider_linux as current;
@@ -39,5 +41,7 @@ pub use umineko_provider_openbsd as current;
 pub use umineko_provider_netbsd as current;
 #[cfg(target_os = "wasi")]
 pub use umineko_provider_wasi as current;
+#[cfg(all(unix, not(any(target_os = "linux", target_vendor = "apple", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))))]
+pub use umineko_provider_posix as current;
 
 pub use auto::{Auto};

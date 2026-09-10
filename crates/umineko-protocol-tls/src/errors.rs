@@ -2,6 +2,7 @@ use alloc::string::String;
 use core::fmt;
 
 use umineko_helpers::provider::ProviderError;
+use umineko_crypto_kdftree::KDFTreeError;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TLSAlert {
@@ -97,5 +98,14 @@ impl From<TLSAlert> for TLSError {
 impl From<ProviderError> for TLSError {
     fn from(error: ProviderError) -> Self {
         Self::Provider(error)
+    }
+}
+
+impl From<KDFTreeError> for TLSError {
+    fn from(error: KDFTreeError) -> Self {
+        match error {
+            KDFTreeError::Provider(error) => Self::Provider(error),
+            KDFTreeError::Length | KDFTreeError::Counter => Self::Limit,
+        }
     }
 }

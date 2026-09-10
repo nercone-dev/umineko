@@ -8,11 +8,17 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+umineko-protocol-ip = { workspace = true, default-features = true }
 umineko-protocol-tcp = { workspace = true, default-features = true, optional = true }
 umineko-protocol-udp = { workspace = true, default-features = true, optional = true }
 umineko-protocol-quic = { workspace = true, default-features = true, optional = true }
 umineko-protocol-tls = { workspace = true, default-features = true, optional = true }
 umineko-protocol-http = { workspace = true, default-features = true, optional = true }
+umineko-crypto-rsa = { workspace = true, optional = true }
+umineko-crypto-ecdsa = { workspace = true, optional = true }
+umineko-crypto-eddsa = { workspace = true, optional = true }
+umineko-hash-sha = { workspace = true, optional = true }
+umineko-codec-base = { workspace = true, optional = true }
 umineko-helpers = { workspace = true }
 
 [features]
@@ -20,6 +26,6 @@ default = ["tcp", "udp", "quic", "tls", "https", "dnssec"]
 tcp = ["dep:umineko-protocol-tcp"]
 udp = ["dep:umineko-protocol-udp"]
 quic = ["dep:umineko-protocol-quic"]
-tls = ["dep:umineko-protocol-tls"]
-https = ["dep:umineko-protocol-http"]
-dnssec = []
+tls = ["dep:umineko-protocol-tls", "dep:umineko-protocol-tcp"]
+https = ["dep:umineko-protocol-http", "dep:umineko-codec-base", "umineko-codec-base/base64"]
+dnssec = ["dep:umineko-crypto-rsa", "dep:umineko-crypto-ecdsa", "dep:umineko-crypto-eddsa", "dep:umineko-hash-sha", "umineko-hash-sha/sha1", "umineko-hash-sha/sha2", "dep:umineko-codec-base", "umineko-codec-base/base32"]

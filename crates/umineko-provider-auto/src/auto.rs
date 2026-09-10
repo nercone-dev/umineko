@@ -31,6 +31,8 @@ impl Auto {
         return Some(crate::current::NetBSDProvider::NAME);
         #[cfg(target_os = "wasi")]
         return Some(crate::current::WASIProvider::NAME);
+        #[cfg(all(unix, not(any(target_os = "linux", target_vendor = "apple", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))))]
+        return Some(crate::current::POSIXProvider::NAME);
         #[allow(unreachable_code)]
         None
     }
@@ -52,6 +54,8 @@ impl Auto {
         return Providers::register(alloc::sync::Arc::new(crate::current::NetBSDProvider::new()));
         #[cfg(target_os = "wasi")]
         return Providers::register(alloc::sync::Arc::new(crate::current::WASIProvider::new()));
+        #[cfg(all(unix, not(any(target_os = "linux", target_vendor = "apple", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))))]
+        return Providers::register(alloc::sync::Arc::new(crate::current::POSIXProvider::new()));
         #[allow(unreachable_code)]
         Err(ProviderError::Unavailable)
     }
@@ -83,7 +87,8 @@ impl Auto {
     #[cfg(feature = "constructor")]
     pub const CONSTRUCTOR: () = {
         #[used]
-        #[cfg_attr(any(target_os = "linux", target_os = "android", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "wasi"), unsafe(link_section = ".init_array"))]
+        #[cfg_attr(any(all(unix, not(any(target_vendor = "apple", target_os = "aix", target_arch = "xtensa"))), target_os = "wasi"), unsafe(link_section = ".init_array"))]
+        #[cfg_attr(all(unix, target_arch = "xtensa"), unsafe(link_section = ".ctors"))]
         #[cfg_attr(target_vendor = "apple", unsafe(link_section = "__DATA,__mod_init_func"))]
         #[cfg_attr(target_os = "windows", unsafe(link_section = ".CRT$XCU"))]
         static ENTRY: extern "C" fn() = Auto::entry;

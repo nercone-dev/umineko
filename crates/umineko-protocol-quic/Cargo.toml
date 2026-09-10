@@ -8,5 +8,11 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+umineko-protocol-ip = { workspace = true, default-features = true }
+umineko-protocol-udp = { workspace = true, default-features = true }
 umineko-protocol-tls = { workspace = true, default-features = true }
+umineko-hash-sha = { workspace = true, features = ["sha2"] }
+umineko-crypto-hkdf = { workspace = true }
+umineko-crypto-aes = { workspace = true }
+umineko-crypto-chacha20 = { workspace = true }
 umineko-helpers = { workspace = true }

@@ -6,3 +6,9 @@ edition.workspace = true
 rust-version.workspace = true
 repository.workspace = true
 license.workspace = true
+
+[dependencies]
+umineko-url = { workspace = true, default-features = true }
+umineko-protocol-ip = { workspace = true, default-features = true }
+umineko-protocol-udp = { workspace = true, default-features = true }
+umineko-protocol-tls = { workspace = true, default-features = true }

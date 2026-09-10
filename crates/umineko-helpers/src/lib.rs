@@ -20,6 +20,7 @@ pub mod provider {
     pub mod exchange;
     pub mod kdf;
     pub mod codec;
+    pub mod random;
 
     pub use base::{Provider, ProviderCategory, ProviderHandle, ProviderError, ProviderInterest, ProviderOrder, ProviderFallback, ProviderPolicy};
     pub use registry::{ProviderRegistry, ProviderEntry, ProviderSelection, ProviderLock};
@@ -30,6 +31,7 @@ pub mod provider {
     pub use exchange::{ExchangeProvider, ExchangeProviderRequest, ExchangeProviders};
     pub use kdf::{KDFProvider, KDFProviderRequest, KDFProviderInputs, KDFProviders};
     pub use codec::{CodecProvider, CodecProviderRequest, CodecDirection, CodecProviders};
+    pub use random::{RandomProvider, RandomProviderRequest, RandomProviders};
 }
 
 #[cfg(feature = "bytes")]

@@ -2,16 +2,7 @@ use crate::errors::ScryptError;
 
 use umineko_helpers::provider::{KDFProviderInputs, KDFProviderRequest, KDFProviders};
 
-///
-pub trait PRF {
-    fn output_size(&self) -> usize;
-
-    fn compute(&self, key: &[u8], data: &[u8], output: &mut [u8]);
-
-    fn name(&self) -> Option<&'static str> {
-        None
-    }
-}
+pub use umineko_crypto_pbkdf2::PRF;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Scrypt<P: PRF> {

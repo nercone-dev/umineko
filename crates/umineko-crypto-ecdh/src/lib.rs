@@ -8,4 +8,4 @@ pub mod errors;
 pub mod ecdh;
 
 pub use errors::{ECDHError};
-pub use ecdh::{ECDH, ECDHPrivateKey, ECDHPublicKey, ECDHSharedSecret};
+pub use ecdh::{ECDH, ECDHCurve, ECDHBasis, ECDHField, ECDHParameters, ECDHPrivateKey, ECDHPublicKey, ECDHSharedSecret};

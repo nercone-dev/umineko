@@ -8,7 +8,8 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-umineko-provider = { workspace = true, features = ["ip", "icmp", "uds", "tcp", "udp", "crypto"] }
+umineko-provider = { workspace = true }
+umineko-provider-posix = { workspace = true }
 umineko-protocol-ip = { workspace = true, default-features = true, optional = true }
 umineko-protocol-icmp = { workspace = true, default-features = true, optional = true }
 umineko-protocol-uds = { workspace = true, default-features = true, optional = true }
@@ -17,9 +18,9 @@ umineko-protocol-udp = { workspace = true, default-features = true, optional = t
 
 [features]
 default = ["ip", "icmp", "uds", "tcp", "udp", "crypto"]
-ip = ["umineko-provider/ip", "dep:umineko-protocol-ip"]
-icmp = ["umineko-provider/icmp", "dep:umineko-protocol-icmp", "dep:umineko-protocol-ip"]
-uds = ["umineko-provider/uds", "dep:umineko-protocol-uds"]
-tcp = ["umineko-provider/tcp", "dep:umineko-protocol-tcp"]
-udp = ["umineko-provider/udp", "dep:umineko-protocol-udp"]
+ip = ["umineko-provider/ip", "umineko-provider-posix/ip", "dep:umineko-protocol-ip"]
+icmp = ["umineko-provider/icmp", "umineko-provider-posix/icmp", "dep:umineko-protocol-icmp", "dep:umineko-protocol-ip"]
+uds = ["umineko-provider/uds", "umineko-provider-posix/uds", "dep:umineko-protocol-uds"]
+tcp = ["umineko-provider/tcp", "umineko-provider-posix/tcp", "dep:umineko-protocol-tcp"]
+udp = ["umineko-provider/udp", "umineko-provider-posix/udp", "dep:umineko-protocol-udp"]
 crypto = ["umineko-provider/crypto"]

@@ -1,0 +1,11 @@
+[package]
+name = "umineko-crypto-gost"
+description = "GOST block ciphers: Kuznyechik, Magma and GOST 28147-89"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+umineko-helpers = { workspace = true }

@@ -9,8 +9,11 @@ license.workspace = true
 
 [dependencies]
 umineko-protocol-ip = { workspace = true, default-features = true }
+umineko-protocol-udp = { workspace = true, default-features = true }
+umineko-protocol-arp = { workspace = true, default-features = true, optional = true }
+umineko-protocol-ndp = { workspace = true, default-features = true, optional = true }
 
 [features]
 default = ["dhcpv4", "dhcpv6"]
-dhcpv4 = []
-dhcpv6 = []
+dhcpv4 = ["dep:umineko-protocol-arp"]
+dhcpv6 = ["dep:umineko-protocol-ndp"]

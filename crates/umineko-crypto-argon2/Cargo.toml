@@ -8,4 +8,5 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+umineko-hash-blake = { workspace = true, features = ["blake2"] }
 umineko-helpers = { workspace = true }
